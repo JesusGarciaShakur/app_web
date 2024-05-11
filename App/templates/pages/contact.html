@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block title %} Contactanos {% endblock title %}
+{% block content %}
+
+<head>
+    <style>
+        .text-center {
+            text-align: center;
+        }
+
+        .ask-question {
+            margin-right: 20px;
+        }
+
+        .ask-question a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .ask-question a:hover {
+            color: #0056b3;
+        }
+
+        #contact-form {
+            display: none;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        #contact-form.active {
+            display: block;
+        }
+
+        #contact-form form {
+            margin-top: 15px;
+        }
+
+        details {
+            background: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        summary {
+            list-style: none;
+            font-weight: bold;
+        }
+
+        summary::before {
+            content: '+';
+            padding-right: 5px;
+        }
+
+        details[open] summary::before {
+            content: '-';
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .faq-section h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-section .acordeon-content {
+            display: none;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+
+        .faq-section .acordeon-content p {
+            margin-bottom: 0;
+        }
+
+        .acordeon {
+            margin-bottom: 10px;
+        }
+
+        .acordeon label {
+            display: block;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .acordeon label:hover {
+            background: #0056b3;
+        }
+
+        .acordeon input[type="checkbox"] {
+            display: none;
+        }
+
+        .acordeon input[type="checkbox"]:checked ~ .acordeon-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="faq-section">
+        <h1>Preguntas Frecuentes</h1>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon1">
+            <label for="acordeon1">▼ ¿Qué tipo de conexión necesita el dispositivo para funcionar?</label>
+            <div class="acordeon-content">
+                <p>Para el funcionamiento del dispostivo se necesitará de una conexión estable a Wi-Fi.</p>
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon2">
+            <label for="acordeon2">▼ ¿Cuánto tiempo dura la batería del dispositivo?</label>
+            <div class="acordeon-content">
+                <p>El dispositivo cuenta con un panel solar, lo cual lo hace autónomo todas los días
+                    al recibir los rayos del sol, el dispostivo se volverá a cargar, por lo que, no tendrás 
+                    que preocuparte por la batería restante.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon3">
+            <label for="acordeon3">▼ ¿Cómo puedo calibrar el sensor ultrasónico para obtener lecturas precisas?</label>
+            <div class="acordeon-content">
+                <p>Las alturas proporcionadas por el sensor ultrasónico ya vienen predeterminadas base
+                    a estandares, desde la aplicación solo necesitarás seleccionar el tipo de dispositivo con el
+                    que cuentas.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon4">
+            <label for="acordeon4">▼ ¿Qué pasa si el sensor no está midiendo correctamente?</label>
+            <div class="acordeon-content">
+                <p>En caso de no recibir lecturas correctas, se deberá seleccionar nuevamente el dispositivo, 
+                    en caso de que esto no resuelva el problema, comunicate con nosotros por medio de 
+                    nuestras redes sociales o completando el formulario para dejarnos tu comentario 
+                    y de esa manera ponernos en contacto contigo.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon5">
+            <label for="acordeon5">▼ ¿Hay alguna manera de recibir alertas cuando el nivel de agua esté bajo?</label>
+            <div class="acordeon-content">
+                <p>El dispositivo detectará de manera automática cuando el dispositivo de agua este casi vacío y 
+                    de manera automática encenderá la bomba para el llenado, de la misma manera al estar lleno se
+                    apagará de manera automática.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon6">
+            <label for="acordeon6">▼ ¿Es compatible el dispositivo con diferentes tamaños de tinacos?</label>
+            <div class="acordeon-content">
+                <p>El dispositivo cuenta con los diferentes tamaños de tinacos en base a estandares, por lo cual solo
+                    deberás seleccionar el contenedor que tengas disponible.
+                </p>
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon7">
+            <label for="acordeon7">▼ ¿Cómo puedo acceder a los datos de capacidad de agua desde la aplicación móvil?</label>
+            <div class="acordeon-content">
+                <p>La aplicación móvil te mostrará el porcentaje de agua que tienes disponible en tu dispostivo.</p>
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon8">
+            <label for="acordeon8">▼ ¿Qué sucede si pierdo la conexión a internet?</label>
+            <div class="acordeon-content">
+                <p>El dispositivo dejará de enviar datos a la aplicación, por lo cual no tendrá funcionamiento.</p>
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon9">
+            <label for="acordeon9">▼ ¿Es posible compartir el acceso a la aplicación con otros usuarios?</label>
+            <div class="acordeon-content">
+                <p>Si es posible, todos tus datos estan guardados en una base de datos, gracias a eso 
+                    podras iniciar sesión en diferentes dispositivos, utilizando tu usuario y contraseña.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon10">
+            <label for="acordeon10">▼ ¿Hay alguna forma de integrar este dispositivo con otros sistemas de automatización del hogar?</label>
+            <div class="acordeon-content">
+                <p>Al ser un sistema independiente, por el momento no se puede integrar con otros dispostivos de domótica.</p>
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <div class="acordeon">
+            <input type="checkbox" id="acordeon11">
+            <label for="acordeon11">▼ ¿Qué pasa si quiero desinstalar el dispositivo o moverlo a otro tinaco?</label>
+            <div class="acordeon-content">
+                <p>Si deseas cambiar el dispositivo a otro tinaco, solo deberás retirarlo y repetir el mismo proceso de instalación
+                    que se haya realizado con anterioridad.</p>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            </div>
+        </div>
+        <!-- Agrega más preguntas frecuentes aquí -->
+    </div>
+    <br>    
+    <hr style="border-top: 0.1px solid #000; opacity: 0.2;">
+    <br>
+    <div class="row justify-content-center">
+        <div class="ask-question">
+            <p>Tienes alguna otra pregunta, háznosla saber, <a href="#" id="toggle-form">da click aquí</a></p>
+        </div>
+    </div>
+
+    <div id="contact-form">
+        <form action="{{ url_for('visit.contact') }}" id="miFormulario" method="post" class="mt-3" style="max-width: 800px; margin: auto;">
+            <div class="form-group">
+                <label for="Name">Nombre:</label>
+                <input type="text" class="form-control" id="Name" name="Name" required pattern="[A-Za-z\s]+" title="Solo letras y espacios son permitidos" placeholder="Ingrese su nombre">
+            </div>
+            <div class="form-group">
+                <label for="Email">Correo electrónico:</label>
+                <input type="email" class="form-control" id="Email" name="Email"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required placeholder="Ingrese su correo electrónico">
+            </div>
+            <div class="form-group">
+                <label for="Phone">Teléfono:</label>
+                <input type="tel" class="form-control" id="Phone" name="Phone" pattern="[0-9]{10}" required title="Ingrese un número de teléfono válido" placeholder="Ingrese su número de teléfono a 10 digitos">
+            </div>
+            <div class="form-group">
+                <label for="Address">Dirección:</label>
+                <input type="text" class="form-control" id="Address" name="Address" required placeholder="Ingrese su dirección">
+            </div>
+            <div class="form-group">
+                <label for="Question">Pregunta o comentario:</label>
+                <textarea class="form-control" id="Question" name="Question" rows="4" required placeholder="Ingrese aquí su pregunta o comentario"></textarea>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Enviar pregunta</button>
+            </div>
+        </form>        
+    </div>
+    <script src="{{ url_for('static', filename='js/Validation.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#toggle-form").click(function (e) {
+                e.preventDefault();
+                $("#contact-form").toggleClass("active");
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("miFormulario").addEventListener("submit", function (event) {
+                alert("¡Tu pregunta se ha enviado correctamente!");
+            });
+        });
+    </script>
+    
+</body>
+
+{% endblock %}

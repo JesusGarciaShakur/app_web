@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %} Compañia {% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1>MajesTIC</h1>
+            <h3>Innovación a Través del Código</h3>
+            <p>
+                ¡En MajesTIC, nos dedicamos con pasión al arte del desarrollo de software, donde cada línea de código es una pincelada que da vida a soluciones digitales impactantes y transformadoras! Nuestro equipo, conformado por talentosos desarrolladores apasionados por la tecnología, se destaca por su creatividad y dedicación inquebrantable. Nos desafiamos constantemente a nosotros mismos para superar los límites establecidos, buscando siempre ofrecer resultados excepcionales que sorprendan y superen las expectativas de nuestros clientes.
+            </p><br>
+            <p>
+                Cada día exploramos las últimas tendencias y tecnologías emergentes para asegurarnos de estar a la vanguardia del desarrollo de software. Nos enorgullece no solo satisfacer las necesidades presentes de nuestros clientes, sino también anticiparnos a las demandas futuras del mercado, creando soluciones que no solo resuelvan problemas actuales, sino que también abran nuevas posibilidades y horizontes.
+            </p><br>
+            <p>
+                Cada proyecto es una oportunidad para desplegar nuestra creatividad y expertise técnico, trabajando en estrecha colaboración con nuestros clientes para entender sus visiones y convertirlas en realidad. Desde aplicaciones móviles hasta sistemas empresariales complejos, abrazamos cada desafío con entusiasmo y dedicación, comprometidos a entregar productos de software que no solo funcionen bien, ¡sino que también dejen una marca duradera en el mundo digital! En MajesTIC, el desarrollo de software es más que un trabajo: es nuestra pasión y nuestro compromiso con la excelencia tecnológica.
+            </p><br>
+        </div>
+        <div class="col-md-6 ">
+            <img src="{{ url_for('static', filename='images/img3.png') }}" alt="Equipo de MajesTIC" class="img-fluid mb-3">
+            <img src="{{ url_for('static', filename='images/image.png') }}" alt="Equipo de MajesTIC" class="img-fluid mb-3">
+        </div>
+    </div>
+</div>
+<hr style="border-top: 1px solid #000; opacity: 0.2;">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Nuestros Conocimientos y Habilidades</h2>
+            <ul class="list-unstyled">
+                <li><strong>Java:</strong> Desarrollamos aplicaciones sólidas utilizando Java.</li>
+                <li><strong>JavaScript:</strong> Creamos experiencias interactivas en la web utilizando entornos de ejecución como node.js.</li>
+                <li><strong>Python:</strong> Exploramos Python para análisis de datos, automatización de tareas y desarrollo web.</li>
+                <li><strong>PHP:</strong> Nuestro equipo domina PHP y frameworks como Laravel para crear aplicaciones web dinámicas y escalables.</li>
+                <li><strong>Kotlin:</strong> Nos aventuramos en el desarrollo de aplicaciones Android con Kotlin.</li>
+                <li><strong>Dart:</strong> Utilizamos Dart para crear aplicaciones móviles con Flutter.</li>
+                <li><strong>SQL y NoSQL:</strong> Diseñamos bases de datos relacionales (SQL) y NoSQL (como Firebase) según las necesidades del proyecto.</li>
+            </ul>
+            <p>Además de nuestras habilidades técnicas, nos destacamos por nuestro compromiso con la calidad, la innovación y la satisfacción del cliente en cada proyecto que emprendemos.</p>
+        </div>
+        <div class="col-md-6">
+            <h2>Nuestros Proyectos Destacados</h2>
+            <p>En MajesTIC, nos enorgullecemos de haber contribuido al éxito de diversos proyectos que han impactado positivamente en sus respectivas industrias. Algunos de nuestros proyectos destacados incluyen:</p>
+            <ul>
+                <p>● El desarrollo de un Sistema de Punto de Venta para la papelería Sandy. Este sistema ha sido 
+                    diseñado con el objetivo de facilitar las ventas y la gestión del inventario de este negocio 
+                    dedicado a la venta de materiales de papelería.</p>
+                <p>● El Desarrollo del Sistema de Gestión de Inventario para Textiles RG. Este sistema ha sido diseñado
+                    para permitir a la Textilera RG gestionar de manera más eficiente las entradas y salidas de sus
+                    productos, así como tener un mejor control sobre sus trabajadores.</p>
+                <p>● El desarrollo del Sistema de Monitoreo para Contenedores de Agua, una solución enfocada en brindar
+                    al público en general un mejor control sobre sus contenedores de agua, 
+                    incluyendo productos como tinacos, cisternas y tanques de agua.
+                </p>
+            </ul>
+            <p>Estos son solo algunos ejemplos de cómo MajesTIC ha marcado la diferencia a través de soluciones tecnológicas innovadoras y efectivas.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
