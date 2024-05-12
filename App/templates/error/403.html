@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página no encontrada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .image-container img {
+            width: 300px;
+            height: auto;
+        }
+
+        .link {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link:hover {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Houu! No te corresponde estar aqui</h1>
+    <p>Me lleva la cachetada.</p>
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='images/403.gif') }}" alt="Logo de la empresa"width="80px">
+    </div>
+    <p>Regresa a tu lugar <a href="/">página de inicio de sesión</a> para seguir trabajando.</p>
+</body>
+</html>

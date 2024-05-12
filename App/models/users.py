@@ -1,4 +1,4 @@
-# models/users.py
+#models/users.py
 from .db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -80,7 +80,7 @@ class User:
         
     @staticmethod
     def get_all():
-        users = []  # Declara la lista vacía antes del bucle
+        users = []  #Declara la lista vacía antes del bucle
         with mydb.cursor(dictionary=True) as cursor:
             sql = "SELECT * FROM vista_usuarios"
             cursor.execute(sql)
@@ -97,7 +97,7 @@ class User:
                     User_direction=row["user_direction"],
                     User_phoneNumber=row["user_phoneNumber"]
                 )
-                users.append(user)  # Agrega el objeto usar a la lista
+                users.append(user)  #Agrega el objeto usar a la lista
         return users
 
     @staticmethod
@@ -126,8 +126,8 @@ class User:
 
     @staticmethod
     def check_password(user_password):
-        # Esta función comprueba si la contraseña proporcionada coincide con la contraseña almacenada en el objeto del usuario
-        return check_password_hash(self.user_password, user_password)
+        #Esta función comprueba si la contraseña proporcionada coincide con la contraseña almacenada en el objeto del usuario
+        return check_password_hash(self.user_password, user_password) # type: ignore
 
     @staticmethod
     def get_by_password(user_username, user_password):
@@ -142,19 +142,19 @@ class User:
                     return User.__get__(user["id_user"])
             return None
 
-# class Role:
-#     def __init__(self, id_role='', name_role=''):
-#         self.id_role = id_role
-#         self.name_role = name_role
+class Type:
+    def __init__(self, id_type='', type_name=''):
+        self.id_type = id_type
+        self.type_name = type_name
     
-#     @staticmethod
-#     def get_all():
-#         roles = []
-#         with mydb.cursor(dictionary=True) as cursor:
-#             sql = "SELECT * FROM roles"
-#             cursor.execute(sql)
-#             result = cursor.fetchall()
-#             for row in result:
-#                 role = Role(id_role=row["id_role"], name_role=row["name_role"])
-#                 roles.append(role)
-#         return roles
+    @staticmethod
+    def get_all():
+        types = []
+        with mydb.cursor(dictionary=True) as cursor:
+            sql = "SELECT * FROM type"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                type= Type(id_type=row["id_type"], type_name=row["type_name"])
+                types.append(type)
+        return types

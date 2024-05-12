@@ -85,32 +85,10 @@
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <h2 class="text-center mb-4">Registro para Adquirir el SMCA</h2>
-      <p class="text-center">Si deseas adquirir nuestro dispositivo, completa el siguiente formulario y nos pondremos en contacto contigo</p>
-      <form action="{{ url_for('visit.product') }}" id="miformulario" method="post" style="max-width: 400px; margin: auto;" onsubmit="return validarFormulario()">
-        <div class="form-group">
-            <label for="name">Nombre(s):</label>
-            <input type="text" id="name1" name="name1" class="form-control" required pattern="[A-Za-z\s]+" title="Solo letras y espacios son permitidos" placeholder="Ingrese su(s) nombre(s)">
-        </div>
-        <div class="form-group">
-            <label for="lastname1">Apellido(s):</label>
-            <input type="text" id="lastname1" name="lastname1" class="form-control" required pattern="[A-Za-z\s]+" title="Solo letras y espacios son permitidos" placeholder="Ingrese su(s) apellido(s)">
-        </div>
-        <div class="form-group">
-            <label for="email">Correo electrónico:</label>
-            <input type="email" id="email1" name="email1" class="form-control" required placeholder="Ingrese su correo electrónico">
-        </div>
-        <div class="form-group">
-            <label for="numberPhone">Teléfono:</label>
-            <input type="tel" id="numberPhone" name="numberPhone" class="form-control" pattern="[0-9]{10}" required title="Ingrese un número de teléfono válido" placeholder="Ingrese su número de teléfono">
-        </div>
-        <div class="form-group">
-            <label for="adress1">Dirección:</label>
-            <input type="text" id="adress" name="adress1" class="form-control" required placeholder="Ingrese su dirección">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
-    </form>    
+      <h2 class="text-center mb-4">Adquirir el SMCA</h2>
+      <p class="text-center">Si deseas adquirir nuestro dispositivo completa el siguiente apartado, y nos pondremos en contacto contigo</p>   
       <br>
+      <!-- <img src="{{ url_for('static', filename='images/logo1.png') }}" width="374" height="246">-->
       <hr style="border-top: 1px solid #000; opacity: 0.2;">
       <br>
       <div id="firebaseui-auth-container">

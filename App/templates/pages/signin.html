@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Registrarse
+{% endblock title %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container justify-content-center align-items-center" style="max-width: 400px; border: 1px solid black; border-radius: 10px; padding: 15px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="text-center mb-4">Inicio de sesión</h1>
+            <form method="post">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    {{ form.user_username.label(class="form-label") }}
+                    {{ form.user_username(class="form-control", placeholder="Ingrese su nombre de usuario") }}
+                    {% if form.user_username.errors %}
+                        {% for error in form.user_username.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.user_password.label(class="form-label") }}
+                    {{ form.user_password(class="form-control", placeholder="Ingrese su contraseña") }}
+                    {% if form.user_password.errors %}
+                        {% for error in form.user_password.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <p><label class="form-check-label" for="flexCheckDefault"><a href="{{ url_for('user.register') }}">¿No tienes cuenta? Crea una</a></label></p>
+                <button class="btn btn-primary btn-block far fa-user-circle" type="submit">  Ingresar</button>
+                <p class="mt-5 mb-3 text-body-secondary">&copy; MAJESTIC</p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

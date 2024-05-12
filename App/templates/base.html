@@ -21,7 +21,7 @@
     <header class="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <<a class="navbar-brand" href="{{ url_for('visit.index') }}"><img src="{{ url_for('static', filename='images/imagerevert.png') }}"
+                <a class="navbar-brand" href="{{ url_for('visit.index') }}"><img src="{{ url_for('static', filename='images/imagerevert.png') }}"
                         class="logo" alt="Logo"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('visit.company') }}">Compañía</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('user.register') }}">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link far fa-user-circle" style="font-size:24px" href="{{ url_for('home.signin') }}"></a>
                         </li>
                     </ul>
                 </div>
@@ -60,8 +66,8 @@
                 <div class="col-md-4">
                     <h5>Información Legal</h5>
                     <ul>
-                        <li><a href="{{ url_for('visit.legal') }}" class="footer-link">Términos y Condiciones</a></li>
-                        <li><a href="{{ url_for('visit.privacidad') }}" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="{{ url_for('legal.legal_information') }}" class="footer-link">Términos y Condiciones</a></li>
+                        <li><a href="{{ url_for('legal.privacy_policy') }}" class="footer-link">Política de Privacidad</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

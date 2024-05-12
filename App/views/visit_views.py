@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, session, abort
-
+from flask import Blueprint, render_template, redirect, url_for, flash, session
+from models.users import User
+from forms.user_forms import LoginForms
 visit_views = Blueprint('visit', __name__)
 
 @visit_views.route('/')
@@ -18,10 +19,3 @@ def contact():
 def company():
     return render_template('pages/company.html')
 
-@visit_views.route('/legal')
-def legal():
-    return render_template('legal/legal_information.html')
-
-@visit_views.route('/privacidad')
-def privacidad():
-    return render_template('legal/Privaci_Policy.html')
