@@ -36,12 +36,13 @@ class LoginForms(FlaskForm):
 
 #Clase para actualizar perfil
 class UpdateProfileForm(FlaskForm):
+    id_type = SelectField('Tipo de Usuario', coerce=int, validators=[DataRequired()], choices=[])
     user_username = StringField('Nombre de Usuario', validators = [DataRequired(), Length(min=4, max=25)])
     user_name = StringField('Nombre(s)', validators = [DataRequired(), Length(min=4, max=25)])
     user_lastname = StringField('Apellido(s)', validators = [DataRequired(), Length(min=4, max=25)])
     user_email = EmailField('Correo Electronico', validators = [DataRequired(), Email()])
     user_password = PasswordField('Contraseña', validators = [DataRequired(), Length(min=8)])
-    user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired()])
-    user_direction = StringField('Direccion', validators = [DataRequired(), Length(min=4, max=25)])
+    user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
+    user_direction = StringField('Direccion', validators = [DataRequired(), Length(min=4, max=100)])
     user_phoneNumber = StringField('Telefono', validators = [DataRequired(),Length(min=10, max=10)])
-    submit = SubmitField('Actualizar Perfil')
+    submit = SubmitField('Actualizar informacion')

@@ -15,7 +15,10 @@ body {
 }
 
 .content {
-    z-index: 2;
+    background: linear-gradient(transparent, white);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
 }
 
 .logo {
@@ -29,7 +32,6 @@ body {
     background-color: #343a40;
     padding-top: 5px;
     padding-bottom: 5px;
-    background: linear-gradient(transparent);
     border-radius: 0 0 10px 10px;
 }
 
@@ -44,15 +46,8 @@ body {
     padding-bottom: 20px;
     border-radius: 5px 5px 0 0;
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-}
-
-.content {
-    background: linear-gradient(transparent, white);
-    position: relative;
-    z-index: 1;
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .content img {
@@ -143,37 +138,6 @@ details {
     color: #666;
     padding-left: 60px;
     padding-right: 30px;
-}
-
-#miFormulario {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#miFormulario .form-group label {
-    color: #333;
-}
-
-#miFormulario .form-control {
-    border-color: #007bff;
-}
-
-#miFormulario .form-control:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
-}
-
-#miFormulario .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    font-weight: bold;
-}
-
-#miFormulario .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
 }
 
 #miFormulario {

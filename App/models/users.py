@@ -18,18 +18,22 @@ class User:
         self.user_phoneNumber = user_phoneNumber
 
     def save(self):
-            with mydb.cursor() as cursor:
-                self.user_password = generate_password_hash(self.user_password)
-                sql = "INSERT INTO users (id_type, user_username, user_name, user_lastname, user_email, user_password, user_direction, user_phoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber)
-                cursor.execute(sql, values)
-            mydb.commit() 
+        with mydb.cursor() as cursor:
+            self.user_password = generate_password_hash(self.user_password)
+            sql = "INSERT INTO users (id_type, user_username, user_name, user_lastname, user_email, user_password, user_direction, user_phoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber)
+            cursor.execute(sql, values)
+        mydb.commit() 
 
     def update(self):
         with mydb.cursor() as cursor:
-            sql = "UPDATE users SET user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_direction=%s, user_phoneNumber=%s WHERE id_user = %s"
-            val = (self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_direction, self.user_phoneNumber)
-            cursor.execute(sql, val)
+            self.user_password = generate_password_hash(self.user_password)
+            sql = "UPDATE users SET id_type=%s, user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_password=%s, user_direction=%s, user_phoneNumber=%s WHERE id_user = %s"
+            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber, self.id_user)
+            #revisar errores 
+            # print(f"SQL: {sql}")
+            # print(f"Values: {values}")
+            cursor.execute(sql, values)
             mydb.commit()
         return self.id_user 
 
@@ -80,24 +84,23 @@ class User:
         
     @staticmethod
     def get_all():
-        users = []  #Declara la lista vacía antes del bucle
+        users = []
         with mydb.cursor(dictionary=True) as cursor:
             sql = "SELECT * FROM vista_usuarios"
             cursor.execute(sql)
             result = cursor.fetchall()
             for row in result:
                 user = User(
-                    id_user=row["id_user"],
-                    Id_type=row["id_type"],
-                    User_username=row["user_username"],
-                    User_name=row["user_name"],
-                    User_lastname=row["user_lastname"],
-                    User_email=row["user_email"],
-                    User_password=row["user_password"],
-                    User_direction=row["user_direction"],
-                    User_phoneNumber=row["user_phoneNumber"]
+                    id_user=row["id de usuario"],
+                    id_type=row["tipo de usuario"],
+                    user_username=row["nombre de usuario"],
+                    user_name=row["nombre"],
+                    user_lastname=row["apellido"],
+                    user_email=row["correo electronico"],
+                    user_direction=row["direccion"],
+                    user_phoneNumber=row["numero de telefono"]
                 )
-                users.append(user)  #Agrega el objeto usar a la lista
+                users.append(user)
         return users
 
     @staticmethod
@@ -105,9 +108,8 @@ class User:
         with mydb.cursor(dictionary=True) as cursor:
             sql = "SELECT id_user FROM users WHERE user_username = %s"
             cursor.execute(sql, (user_username,))
-            result = cursor.fetchone()  # Consumir el resultado del cursor
+            result = cursor.fetchone()
             return result is not None
-
 
     @staticmethod
     def check_email(user_email):
@@ -127,7 +129,6 @@ class User:
 
     @staticmethod
     def check_password_hash(user_password):
-        # Esta función comprueba si la contraseña proporcionada coincide con la contraseña almacenada en el objeto del usuario
         return check_password_hash(self.user_password, user_password) # type: ignore
 
     @staticmethod

@@ -3,21 +3,21 @@ from .db import get_connection
 mydb = get_connection()
 
 class Type:
-    def __init__(self, id_type='', name_type=''):
+    def __init__(self, id_type='', type_name=''):
         self.id_type = id_type
-        self.name_type = name_type
+        self.type_name = type_name
 
     def save(self):
         with mydb.cursor as cursor:
-            sql = "INSERT INTO type (name_type) VALUES (%s)"
-            val = (self.name_type,)
+            sql = "INSERT INTO type (type_name) VALUES (%s)"
+            val = (self.type_name,)
             cursor.execute(sql, val)
         mydb.commit()
         
     def update(self):
         with mydb.cursor as cursor:
-            sql = "UPDATE type SET name_type = %s WHERE id_type = %s"
-            val = (self.name_type, self.id_type)
+            sql = "UPDATE type SET type_name = %s WHERE id_type = %s"
+            val = (self.type_name, self.id_type)
             cursor.execute(sql, val)
             mydb.commit()
         return self.id_type
@@ -37,7 +37,7 @@ class Type:
             type = cursor.fetchone()
             if type:
                 type = Type(id_type=type["id_type"],
-                            name_type=type["name_type"])
+                            type_name=type["type_name"])
                 return type
             return None
     
@@ -49,7 +49,7 @@ class Type:
             type = cursor.fetchone()
             if type:
                 type = Type(id_type=type["id_type"],
-                            name_type=type["name_type"])
+                            type_name=type["type_name"])
                 return type
             return None
 
@@ -62,6 +62,6 @@ class Type:
             result = cursor.fetchall()
             for row in result:
                 type = Type(id_type=row["id_type"],
-                            name_type=row["name_type"])
+                            type_name=row["type_name"])
                 types.append(type)
         return types

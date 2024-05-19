@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-05-2024 a las 19:22:53
+-- Tiempo de generación: 20-05-2024 a las 00:06:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -93,8 +93,8 @@ CREATE TABLE `type` (
 --
 
 INSERT INTO `type` (`id_type`, `type_name`) VALUES
-(1, 'admin\r\n'),
-(2, 'visit_user');
+(1, 'Administrador\r\n'),
+(2, 'Visitante');
 
 -- --------------------------------------------------------
 
@@ -119,9 +119,36 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `id_type`, `user_username`, `user_name`, `user_lastname`, `user_email`, `user_password`, `user_direction`, `user_phoneNumber`) VALUES
-(3, 1, 'admin1', 'Jesus Guadalupe', 'Rodriguez Garcia', 'jesusrguez97@gmail.com', 'pbkdf2:sha256:600000$QdfJfpXSzn6LP5rX$8fdd113ed52d6113e27ec62b7cfb562ce7652155d541cde569022614cd5ba657', 'Privada 20 de noviembre #', '2147483647'),
+(3, 1, 'admin1', 'Jesus Guadalupe', 'Rodriguez Garcia', 'jesusrguez97@gmail.com', 'pbkdf2:sha256:600000$99N1zaoqWtNBrJaf$2a4b198e2429e35be042bc5bdfe3983398cf456653f1966dea9bc5c748928f1c', 'Privada 20 de noviembre #4', '2462214081'),
 (5, 2, 'usuario1', 'Isabel', 'Hernandez Fernandez', 'isabel@gmail.com', 'pbkdf2:sha256:600000$zzWfZySobgg6WF6A$270f534861e865cb2e2a8aa0d09af82a7ce0fdf620be829b9e875f5f164fddd7', 'Privada 20 de noviembre #', '2147483647'),
-(21, 2, 'ElPadrino', 'Luis', 'Estrada', 'luisestrada@gmail.com', 'pbkdf2:sha256:600000$7Z4DMx2pw1WynG4p$9b3e55fba923cd56a502c3ea53e2a438164efe8def7289ae4e286a4d8057fbee', 'Privada 20 de noviembre #4 ', '2462214081');
+(21, 2, 'ElPadrino', 'Luis', 'Estrada', 'luisestrada@gmail.com', 'pbkdf2:sha256:600000$7Z4DMx2pw1WynG4p$9b3e55fba923cd56a502c3ea53e2a438164efe8def7289ae4e286a4d8057fbee', 'Privada 20 de noviembre #4 ', '2462214081'),
+(22, 1, 'admin2', 'Administrador', 'Fijo de prueba', 'admin@gmail.com', 'pbkdf2:sha256:600000$bslj9Yx9Z4D7HSCG$0befaccae0e087e8a8582a0fe4998396ff2d679ff5160bf17f4bb958baae6275', 'Privada 20 de noviembre #4', '2462214081');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_usuarios`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_usuarios` (
+`id de usuario` int(15)
+,`tipo de usuario` int(2)
+,`nombre de usuario` varchar(15)
+,`nombre` text
+,`apellido` text
+,`correo electronico` varchar(50)
+,`direccion` varchar(100)
+,`numero de telefono` varchar(15)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_usuarios`
+--
+DROP TABLE IF EXISTS `vista_usuarios`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_usuarios`  AS SELECT `users`.`id_user` AS `id de usuario`, `users`.`id_type` AS `tipo de usuario`, `users`.`user_username` AS `nombre de usuario`, `users`.`user_name` AS `nombre`, `users`.`user_lastname` AS `apellido`, `users`.`user_email` AS `correo electronico`, `users`.`user_direction` AS `direccion`, `users`.`user_phoneNumber` AS `numero de telefono` FROM `users` ;
 
 --
 -- Índices para tablas volcadas
@@ -192,7 +219,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_user` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Restricciones para tablas volcadas

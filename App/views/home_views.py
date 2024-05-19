@@ -23,7 +23,7 @@ def signin():
             }
             print(f"User authenticated: {user.user_username} with type: {user.id_type}")
             if user.id_type == 1:
-                return redirect(url_for('admin.admin_sales'))
+                return redirect(url_for('admin.admin_users'))
             elif user.id_type == 2:
                 return redirect(url_for('visit.index'))
             else:
