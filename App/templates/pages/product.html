@@ -86,13 +86,16 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2 class="text-center mb-4">Adquirir el SMCA</h2>
-      <p class="text-center">Si deseas adquirir nuestro dispositivo completa el siguiente apartado, y nos pondremos en contacto contigo</p>   
+      {% if 'user' not in session %}
+      <p class="text-center">Si deseas adquirir nuestro dispositivo
+        <a class="download1" href="{{ url_for('home.signin') }}">inicia sesion</a>
+        , o <a class="download1" href="{{ url_for('home.logout') }}">registrate</a>
+        para que puedas adquirir el dispositivo</p>   
       <br>
-      <!-- <img src="{{ url_for('static', filename='images/logo1.png') }}" width="374" height="246">-->
-      <hr style="border-top: 1px solid #000; opacity: 0.2;">
-      <br>
+      {% else %}
+      <img src="{{ url_for('static', filename='images/logo1.png') }}" width="374" height="246">
       <div id="firebaseui-auth-container">
-        <h2 class="text-center mb-4">Registro para Aplicación Móvil</h2>
+        <h2 class="text-center mb-4">Lista de productos</h2>
         <form id="register-form" style="max-width: 400px; margin: auto;">
           <div class="form-group">
               <label for="email">Correo electrónico:</label>
@@ -109,6 +112,9 @@
           <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
       </form>      
       </div>
+      {% endif %}
+      <hr style="border-top: 1px solid #000; opacity: 0.2;">
+      <br>
     </div>
     <div class="col-md-6">
       <div class="card">
@@ -152,11 +158,9 @@
           <p class="text-center"><strong>¡Listo! Tu dispositivo está ahora listo para funcionar.</strong></p>
         </div>
       </div>
-    </div>
-        
+    </div> 
   </div>
 </div>
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("miformulario").addEventListener("submit", function(event) {

@@ -27,7 +27,7 @@ class User:
 
     def update(self):
         with mydb.cursor() as cursor:
-            sql = "UPDATE users SET user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_direction=%s, user_phoneNumber=%s"
+            sql = "UPDATE users SET user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_direction=%s, user_phoneNumber=%s WHERE id_user = %s"
             val = (self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_direction, self.user_phoneNumber)
             cursor.execute(sql, val)
             mydb.commit()
@@ -105,8 +105,9 @@ class User:
         with mydb.cursor(dictionary=True) as cursor:
             sql = "SELECT id_user FROM users WHERE user_username = %s"
             cursor.execute(sql, (user_username,))
-            result = cursor.fetchone()
+            result = cursor.fetchone()  # Consumir el resultado del cursor
             return result is not None
+
 
     @staticmethod
     def check_email(user_email):
@@ -125,8 +126,8 @@ class User:
             return result is not None
 
     @staticmethod
-    def check_password(user_password):
-        #Esta función comprueba si la contraseña proporcionada coincide con la contraseña almacenada en el objeto del usuario
+    def check_password_hash(user_password):
+        # Esta función comprueba si la contraseña proporcionada coincide con la contraseña almacenada en el objeto del usuario
         return check_password_hash(self.user_password, user_password) # type: ignore
 
     @staticmethod

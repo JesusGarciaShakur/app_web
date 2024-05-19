@@ -2,6 +2,9 @@
 from flask import Blueprint, render_template, redirect, url_for # type: ignore
 from models.users import User, Type
 from forms.user_forms import RegisterForm, UpdateProfileForm
+# Importaciones comments
+from models.comments import Comment
+from forms.comment_forms import CommentForm, UpdateCommentForm
 
 user_views = Blueprint('user', __name__)
 
@@ -60,4 +63,48 @@ def update(id_user):
 def delete(id_user):
     user = User.get(id_user)
     user.delete()
+    return redirect(url_for('visit.index'))
+
+#id_comment, content_comment, email_comment, 
+#date_comment, nameUser_comment
+@user_views.route('/comment/register/', methods=('GET', 'POST'))
+def realize_comment():
+    form = CommentForm()
+    if form.validate_on_submit():
+        content_comment = form.content_comment.data
+        email_comment = form.email_comment.data
+        date_comment = form.date_comment.data
+        nameUser_comment = form.nameUser_comment.data
+        comment = Comment(content_comment = content_comment, email_comment=email_comment, date_comment=date_comment, nameUser_comment=nameUser_comment)
+        comment.save()
+
+        return redirect(url_for('visit.index'))
+    for field, errors in form.errors.items():
+        for error in errors:
+            print(f"Error en el campo '{field}': {error}")
+
+    return render_template('pages/contact.html', form=form)
+
+@user_views.route('/comment/<int:id_user>/update/', methods=('GET', 'POST'))
+def update_comment(id_comment):
+    form = UpdateCommentForm()
+    comment = Comment.get(id_comment)
+    if form.validate_on_submit():
+        comment.content_comment = form.content_comment.data
+        comment.email_comment = form.email_comment.data
+        comment.date_comment = form.date_comment.data
+        comment.nameUser_comment = form.nameUser_comment.data
+        comment.update()
+        return redirect(url_for('visit.index'))
+        # Actualiza los atributos del usuario con los datos ingresados
+    form.content_comment.data = comment.content_comment
+    form.email_comment.data = comment.email_comment
+    form.date_comment.data = comment.date_comment
+    form.nameUser_comment.data = comment.nameUser_comment
+    return render_template('pages/contact.html', form=form, comment=comment)
+
+@user_views.route('/comment/<int:id_user>/delete/', methods=['POST'])
+def delete_comment(id_comment):
+    comment = Comment.get(id_comment)
+    comment.delete()
     return redirect(url_for('visit.index'))

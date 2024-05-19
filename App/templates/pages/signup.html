@@ -6,109 +6,81 @@ Registrar nuevo Usuario
 
 {% block content %}
 <br><br><br><br>
-<div class="container justify-content-center align-items-center" style="max-width: 600px; border: 1px solid black; border-radius: 10px; padding: 20px;"> <!-- Ajuste del ancho máximo del formulario -->
+<div class="container justify-content-center align-items-center" style="max-width: 600px; border: 1px solid black; border-radius: 10px; padding: 20px;">
     <div class="row justify-content-center">
-        <div class="col-lg-10"> <!-- Ajuste del ancho de la columna -->
+        <div class="col-lg-10">
             <h1 class="text-center mb-4">Registro de nuevo Usuario</h1>
             <form method="post" action="{{ url_for('user.register') }}" enctype="multipart/form-data">
                 {{ form.csrf_token }}
-                    <div class="form-group">
-                        <label>Nombre de Usuario:</label>
-                        {{ form.user_username(class="form-control", required="required", placeholder="Nombre de Usuario") }}
-                        {% if form.user_username.errors %}
+                <div class="form-group">
+                    <label>Nombre de Usuario:</label>
+                    {{ form.user_username(class="form-control", required="required", placeholder="Nombre de Usuario") }}
+                    {% if form.user_username.errors %}
                         {% for error in form.user_username.errors %}
-                        <p>{{ error }}</p>
+                            <div class="text-danger">{{ error }}</div>
                         {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Nombre(s):</label>
-                        {{ form.user_name(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Nombre(s)") }}
-                        {% if form.user_name.errors %}
-                        {% for error in form.user_name.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Apellido(s):</label>
-                        {{ form.user_lastname(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Apellido(s)") }}
-                        {% if form.user_lastname.errors %}
-                        {% for error in form.user_lastname.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Correo electrónico:</label>
-                        {{ form.user_email(class="form-control", required="required", placeholder="example@gmail.com") }}
-                        {% if form.user_email.errors %}
-                        {% for error in form.user_email.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Contraseña:</label>
-                        {{ form.user_password(class="form-control", required="required", pattern="(?=.*\\d)(?=.*[a-zA-Z]).{8,}", title="La contraseña debe tener al menos 8 caracteres, incluyendo al menos un número y una letra.", placeholder="Ingrese su contraseña") }}
-                        {% if form.user_password.errors %}
-                        {% for error in form.user_password.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Confirme su contraseña:</label>
-                        {{ form.user_password_confirm(class="form-control", required="required", pattern="(?=.*\\d)(?=.*[a-zA-Z]).{8,}", title="Las contraseñas deben coincidir", placeholder="Confirme su contraseña") }}
-                        {% if form.user_password_confirm.errors %}
-                        {% for error in form.user_password_confirm.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ form.id_type.label }}
-                        <select class="form-control" name="{{ form.id_type.name }}">
-                            <option value="">Seleccionar tipo de usuario...</option>
-                            {% for id_type, type_name in form.id_type.choices %}
-                                <option value="{{ id_type }}">{{ type_name }}</option>
-                            {% endfor %}
-                        </select>
-                        {% if form.id_type.errors %}
-                            {% for error in form.id_type.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label for="adress1">Dirección:</label>
-                        {{ form.user_direction(class="form-control", id="adress", required="required", placeholder="Ingrese su dirección") }}
-                        {% if form.user_direction.errors %}
-                        {% for error in form.user_direction.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label>Teléfono:</label>
-                        {{ form.user_phoneNumber(class="form-control", required="required", pattern="[0-9]{10}", title="Ingrese un número de teléfono válido", placeholder="Ingrese su número de teléfono") }}
-                        {% if form.user_phoneNumber.errors %}
-                        {% for error in form.user_phoneNumber.errors %}
-                        <p>{{ error }}</p>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-check text-start my-3">
-                        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault"><a href="{{ url_for('legal.terms_of_service') }}">Políticas de privacidad</a></label>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" disabled id="submitBtn">
-                            <i class="fa fa-user-plus"></i> Registrar
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label>Nombre(s):</label>
+                    {{ form.user_name(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Nombre(s)") }}
+                    {% for error in form.user_name.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Apellido(s):</label>
+                    {{ form.user_lastname(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Apellido(s)") }}
+                    {% for error in form.user_lastname.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    {{ form.user_email(class="form-control", required="required", placeholder="example@gmail.com") }}
+                    {% for error in form.user_email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Contraseña:</label>
+                    {{ form.user_password(class="form-control", required="required", pattern="(?=.*\\d)(?=.*[a-zA-Z]).{8,}", title="La contraseña debe tener al menos 8 caracteres, incluyendo al menos un número y una letra.", placeholder="Ingrese su contraseña") }}
+                    {% for error in form.user_password.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Confirme su contraseña:</label>
+                    {{ form.user_password_confirm(class="form-control", required="required", pattern="(?=.*\\d)(?=.*[a-zA-Z]).{8,}", title="Las contraseñas deben coincidir", placeholder="Confirme su contraseña") }}
+                    {% for error in form.user_password_confirm.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="adress1">Dirección:</label>
+                    {{ form.user_direction(class="form-control", id="adress", required="required", placeholder="Ingrese su dirección") }}
+                    {% for error in form.user_direction.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    {{ form.user_phoneNumber(class="form-control", required="required", pattern="[0-9]{10}", title="Ingrese un número de teléfono válido", placeholder="Ingrese su número de teléfono") }}
+                    {% for error in form.user_phoneNumber.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="id_type" value="2"> <!-- Campo oculto para id_type -->
+                <div class="form-check text-start my-3">
+                    <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault"><a href="{{ url_for('legal.terms_of_service') }}">Políticas de privacidad</a></label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" disabled id="submitBtn">
+                        <i class="fa fa-user-plus"></i> Registrar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
