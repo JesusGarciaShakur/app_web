@@ -1,8 +1,10 @@
 import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, session
 from models.comments import Comment
-from models.users import User
+from models.opinions import Opinion
+from models.products import Product
 from forms.comment_forms import CommentForm
+from forms.opinion_forms import OpinionForm
 
 visit_views = Blueprint('visit', __name__)
 
@@ -10,9 +12,32 @@ visit_views = Blueprint('visit', __name__)
 def index():
     return render_template('pages/index.html')
 
-@visit_views.route('/product')
+@visit_views.route('/product', methods=['GET', 'POST'])
 def product():
-    return render_template('pages/product.html')
+    form = OpinionForm()
+    products = Product.get_all()
+    form.id_product.choices = [(product.id_product, product.product_name) for product in products]  
+    opinions = Opinion.get_all()
+    form.id_product.choices = [(opinion.id_product, opinion.id_product) for opinion in opinions]
+    if 'user' in session:
+        user = session['user']
+        form.date_opinion.data = datetime.date.today()
+        form.username_opinion.data = user.get('user_username')
+
+    if form.validate_on_submit():
+        username_opinion = form.username_opinion.data
+        id_product = form.id_product.data
+        rating_product = form.rating_product.data
+        comment_opinion = form.comment_opinion.data
+        date_opinion = form.date_opinion.data
+        opinion = Opinion(username_opinion=username_opinion,
+                        id_product=id_product,
+                        rating_product=rating_product,
+                        comment_opinion=comment_opinion,
+                        date_opinion=date_opinion)
+        opinion.save()
+        return redirect(url_for('visit.product'))
+    return render_template('pages/product.html', form=form, opinions=opinions)
 
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():

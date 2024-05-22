@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block title %} Producto {% endblock title %}
 {% block content %}
+
 <head>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <br>
 <br>
 <div class="container">
@@ -23,16 +26,16 @@
       <div class="card">
         <div class="card-body">
           <p class="card-text">
-            ¡Explora nuestra asombrosa aplicación móvil, diseñada para ser fácil de utilizar! 
-            Quedarás sorprendido por su interfaz intuitiva, diseñada para simplificar tu experiencia. 
-            Registrarse es tan sencillo como completar el siguiente formulario. Una vez registrado, 
-            iniciar sesión es todo lo que necesitas para sumergirte en nuestro innovador Sistema de Monitoreo para 
+            ¡Explora nuestra asombrosa aplicación móvil, diseñada para ser fácil de utilizar!
+            Quedarás sorprendido por su interfaz intuitiva, diseñada para simplificar tu experiencia.
+            Registrarse es tan sencillo como completar el siguiente formulario. Una vez registrado,
+            iniciar sesión es todo lo que necesitas para sumergirte en nuestro innovador Sistema de Monitoreo para
             Contenedores de Agua (<strong>SMCA</strong>). La detección automática te permite disfrutar de todas
             sus funcionalidades sin complicaciones.
           </p>
           <p>
-            Con nuestra aplicación, puedes configurar fácilmente el temporizador para encender y apagar 
-            la bomba de suministro de agua. Además, ofrecemos una opción para garantizar un suministro de 
+            Con nuestra aplicación, puedes configurar fácilmente el temporizador para encender y apagar
+            la bomba de suministro de agua. Además, ofrecemos una opción para garantizar un suministro de
             agua eficiente y evitar la escasez.
           </p>
         </div>
@@ -48,37 +51,40 @@
       <div class="card">
         <div class="card-body">
           <p>
-            Para adquirir nuestro producto, simplemente completa el siguiente formulario. 
-            Una vez que lo hayas llenado, nos pondremos en contacto contigo para finalizar la configuración 
-            de tu dispositivo y enviarlo a tu domicilio. Así podrás disfrutar del producto y de todos sus beneficios 
+            Para adquirir nuestro producto, simplemente completa el siguiente formulario.
+            Una vez que lo hayas llenado, nos pondremos en contacto contigo para finalizar la configuración
+            de tu dispositivo y enviarlo a tu domicilio. Así podrás disfrutar del producto y de todos sus beneficios
             sin demora. ¡Esperamos poder servirte!
           </p>
           <div class="card-text">
             <p>
               El Sistema de Monitoreo para Contenedores de Agua (<strong>SMCA</strong>) es una solución innovadora que
-              emplea un sensor avanzado capaz de emitir y recibir ondas ultrasónicas para medir con precisión los 
-              niveles de agua en tu contenedor. Estos datos se capturan durante el proceso y luego se presentan de 
-              manera clara y accesible en nuestra <a class="download1" download="SMCA" href="{{ url_for('static', filename='files/SMCA.apk') }}">Aplicación Móvil</a>, diseñada para 
+              emplea un sensor avanzado capaz de emitir y recibir ondas ultrasónicas para medir con precisión los
+              niveles de agua en tu contenedor. Estos datos se capturan durante el proceso y luego se presentan de
+              manera clara y accesible en nuestra <a class="download1" download="SMCA"
+                href="{{ url_for('static', filename='files/SMCA.apk') }}">Aplicación Móvil</a>, diseñada para
               que el usuario pueda interpretarlos fácilmente.
             </p>
             <p>
-              Nuestra aplicación móvil proporciona una experiencia intuitiva y amigable, lo que facilita el monitoreo y 
-              control de tu dispositivo de agua desde cualquier lugar y en cualquier momento. Con una interfaz gráfica 
-              intuitiva, tendrás acceso rápido a información detallada sobre los niveles de agua, alertas de nivel bajo 
+              Nuestra aplicación móvil proporciona una experiencia intuitiva y amigable, lo que facilita el monitoreo y
+              control de tu dispositivo de agua desde cualquier lugar y en cualquier momento. Con una interfaz gráfica
+              intuitiva, tendrás acceso rápido a información detallada sobre los niveles de agua, alertas de nivel bajo
               y otras métricas importantes.
             </p>
-        </div>
-        
+          </div>
+
         </div>
       </div>
     </div>
     <div class="col-md-6 mb-4 text-center">
       <h2 class="mb-4">Descargar la aplicación aquí</h2>
-      <img src="{{ url_for('static', filename='images/cap.png') }}" alt="" class="mx-auto img-fluid" style="max-width: 200px;">
+      <img src="{{ url_for('static', filename='images/cap.png') }}" alt="" class="mx-auto img-fluid"
+        style="max-width: 200px;">
       <div><br>
-        <a download="SMCA" href="{{ url_for('static', filename='files/SMCA.apk') }}" class="btn btn-primary btn-lg">Descargar Aplicación</a>
+        <a download="SMCA" href="{{ url_for('static', filename='files/SMCA.apk') }}"
+          class="btn btn-primary btn-lg">Descargar Aplicación</a>
       </div>
-    </div>       
+    </div>
   </div>
 </div>
 
@@ -90,7 +96,8 @@
       <p class="text-center">Si deseas adquirir nuestro dispositivo
         <a class="download1" href="{{ url_for('home.signin') }}">inicia sesion</a>
         , o <a class="download1" href="{{ url_for('home.logout') }}">registrate</a>
-        para que puedas adquirir el dispositivo</p>   
+        para que puedas adquirir el dispositivo
+      </p>
       <br>
       {% else %}
       <img src="{{ url_for('static', filename='images/logo1.png') }}" width="374" height="246">
@@ -98,19 +105,25 @@
         <h2 class="text-center mb-4">Lista de productos</h2>
         <form id="register-form" style="max-width: 400px; margin: auto;">
           <div class="form-group">
-              <label for="email">Correo electrónico:</label>
-              <input type="email" id="email" name="email" class="form-control" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese un correo electrónico válido" placeholder="Ingrese su correo electrónico">
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="email" class="form-control" required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese un correo electrónico válido"
+              placeholder="Ingrese su correo electrónico">
           </div>
           <div class="form-group">
-              <label for="password">Contraseña:</label>
-              <input type="password" id="password" name="password" class="form-control" required pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="La contraseña debe tener al menos 8 caracteres, incluyendo al menos un número y una letra." placeholder="Ingrese su contraseña">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" class="form-control" required
+              pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}"
+              title="La contraseña debe tener al menos 8 caracteres, incluyendo al menos un número y una letra."
+              placeholder="Ingrese su contraseña">
           </div>
           <div class="form-group">
-              <label for="confirm-password">Confirmar Contraseña:</label>
-              <input type="password" id="confirm-password" name="confirm-password" class="form-control" required placeholder="Confirme su contraseña">
+            <label for="confirm-password">Confirmar Contraseña:</label>
+            <input type="password" id="confirm-password" name="confirm-password" class="form-control" required
+              placeholder="Confirme su contraseña">
           </div>
           <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
-      </form>      
+        </form>
       </div>
       {% endif %}
       <hr style="border-top: 1px solid #000; opacity: 0.2;">
@@ -158,35 +171,100 @@
           <p class="text-center"><strong>¡Listo! Tu dispositivo está ahora listo para funcionar.</strong></p>
         </div>
       </div>
-    </div> 
+    </div>
+  </div>
+</div>
+
+<!-- Sección de comentarios -->
+<div class="container py-5">
+  <h2 class="text-center mb-4">Opiniones</h2>
+  {% if 'user' in session %}
+  <form method="post" action="{{ url_for('visit.product') }}" enctype="multipart/form-data" class="mt-3"
+    style="max-width: 800px; margin: auto;">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <label for="comment_opinion">Opina sobre nuestro producto:</label>
+      {{ form.comment_opinion(class="form-control", required="required", placeholder="Ingrese su pregunta o comentario")
+      }}
+      {% if form.comment_opinion.errors %}
+      {% for error in form.comment_opinion.errors %}
+      <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="form-group">
+      {{ form.id_product.label }}
+      <select class="form-control" name="{{ form.id_product.name }}">
+        <option value="">Selecciona tu producto a calificar...</option>
+        {% for id_product, product_name in form.id_product.choices %}
+        <option value="{{ id_product }}">{{ product_name }}</option>
+        {% endfor %}
+      </select>
+      {% if form.id_product.errors %}
+      {% for error in form.id_product.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label class="form-label">Calificación:</label>
+      <div id="rating-stars" class="form-control">
+        {% for i in range(1, 6) %}
+        <i class="fa fa-star" data-value="{{ i }}"></i>
+        {% endfor %}
+      </div>
+      <input type="hidden" name="rating_product" id="rating_product" value="{{ form.rating_product.data }}">
+    </div>
+    <div class="form-group text-center">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+  {% else %}
+  <p class="text-center">Para opinar sobre nuestro producto, <a href="{{ url_for('home.signin') }}">inicia sesión</a> o
+    <a href="{{ url_for('home.logout') }}">regístrate</a>.</p>
+  {% endif %}
+  <h3 class="text-center mt-5">Opiniones de otros usuarios</h3>
+  <div class="list-group">
+    {% for opinion in opinions %}
+    <div class="list-group-item">
+      <h5 class="mb-1">{{ opinion.username_opinion }}</h5>
+      <p class="mb-1">{{ opinion.comment_opinion }}</p>
+      <small>Calificación: {{ opinion.rating_product }} | Fecha: {{ opinion.date_opinion }}</small>
+    </div>
+    {% else %}
+    <p class="text-center">No hay comentarios todavía.</p>
+    {% endfor %}
   </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("miformulario").addEventListener("submit", function(event) {
-      if (!validarFormulario()) {
-        event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
-      } else {
-        alert("¡El registro se ha completado exitosamente!");
-      }
-    });
-  
-    function validarFormulario() {
-      var nombre = document.getElementById("name1").value;
-      var apellido = document.getElementById("lastname1").value;
-      var email = document.getElementById("email1").value;
-      var telefono = document.getElementById("numberPhone").value;
-      var direccion = document.getElementById("adress").value;
+  document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll('#rating-stars .fa-star');
+    const ratingInput = document.getElementById('rating_product');
 
-      if (nombre === '' || apellido === '' || email === '' || telefono === '' || direccion === '') {
-        alert("Por favor complete todos los campos");
-        return false;
-      }
-      return true;
-    }
+    stars.forEach(star => {
+      star.addEventListener('click', function () {
+        const ratingValue = this.getAttribute('data-value');
+        ratingInput.value = ratingValue;
+
+        // Reset all stars
+        stars.forEach(s => s.classList.remove('checked'));
+
+        // Highlight selected stars
+        for (let i = 0; i < ratingValue; i++) {
+          stars[i].classList.add('checked');
+        }
+      });
+    });
   });
 </script>
+<style>
+  .fa-star {
+    cursor: pointer;
+    color: #ddd;
+  }
 
-<script src="{{ url_for('static', filename='js/credentials.js') }}"></script>
-
+  .fa-star.checked {
+    color: #ffc107;
+  }
+</style>
 {% endblock %}

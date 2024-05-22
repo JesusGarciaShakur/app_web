@@ -45,3 +45,18 @@ class Product:
                                 product_description=product["product_description"])
                 return product
             return None
+    
+    @staticmethod
+    def get_all():
+        products = []
+        with mydb.cursor(dictionary=True) as cursor:
+            sql = "SELECT * FROM products"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                product = Product(id_product=row["id_product"],
+                                product_name=row["product_name"],
+                                product_price=row["product_price"],
+                                product_description=row["product_description"])
+                products.append(product)
+        return products 

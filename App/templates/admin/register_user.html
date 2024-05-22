@@ -22,6 +22,20 @@ Registrar nuevo Usuario
                         {% endif %}
                     </div>
                     <div class="form-group">
+                        {{ form.id_type.label }}
+                        <select class="form-control" name="{{ form.id_type.name }}">
+                            <option value="">Seleccionar tipo de usuario...</option>
+                            {% for id_type, type_name in form.id_type.choices %}
+                                <option value="{{ id_type }}">{{ type_name }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.id_type.errors %}
+                            {% for error in form.id_type.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
                         <label>Nombre(s):</label>
                         {{ form.user_name(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Nombre(s)") }}
                         {% if form.user_name.errors %}
@@ -64,20 +78,6 @@ Registrar nuevo Usuario
                         {% for error in form.user_password_confirm.errors %}
                         <p>{{ error }}</p>
                         {% endfor %}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ form.id_type.label }}
-                        <select class="form-control" name="{{ form.id_type.name }}">
-                            <option value="">Seleccionar tipo de usuario...</option>
-                            {% for id_type, type_name in form.id_type.choices %}
-                                <option value="{{ id_type }}">{{ type_name }}</option>
-                            {% endfor %}
-                        </select>
-                        {% if form.id_type.errors %}
-                            {% for error in form.id_type.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
                         {% endif %}
                     </div>
                     <div class="form-group">

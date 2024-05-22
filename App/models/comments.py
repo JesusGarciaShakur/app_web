@@ -64,18 +64,18 @@ class Comment:
             return None
         
 
-    # @staticmethod
-    # def get_all():
-    #     comments = [] #Declara una lista vacía antes del bucle
-    #     with mydb.cursor(dictionary=True) as cursor:
-    #         sql = "SELECT * FROM comments"
-    #         cursor.execute(sql)
-    #         comments = cursor.fetchall()
-    #         if comments:
-    #             comments = [Comment(id_comment=comment["id_comment"],
-    #                             content_comment=comment["content_comment"],
-    #                             email_comment=comment["email_comment"],
-    #                             date_comment=comment["date_comment"],
-    #                             nameUser_comment=comment["nameUser_comment"]) for comment in comments]
-    #             return comments
-    #         return None
+    @staticmethod
+    def get_all():
+        comments = [] #Declara una lista vacía antes del bucle
+        with mydb.cursor(dictionary=True) as cursor:
+            sql = "SELECT * FROM comments"
+            cursor.execute(sql)
+            comments = cursor.fetchall()
+        if comments:
+                comments = [Comment(id_comment=comment["id_comment"],
+                                content_comment=comment["content_comment"],
+                                email_comment=comment["email_comment"],
+                                date_comment=comment["date_comment"],
+                                nameUser_comment=comment["nameUser_comment"]) for comment in comments]
+                return comments
+        return None

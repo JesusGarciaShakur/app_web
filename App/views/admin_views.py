@@ -2,22 +2,31 @@
 from flask import Blueprint, redirect, render_template, session, abort, url_for
 from models.users import User
 from models.type import Type
+from models.comments import Comment
 from forms.user_forms import RegisterForm, UpdateProfileForm
 
 admin_views = Blueprint('admin', __name__)
-
-@admin_views.route('/admin/sales')
-def admin_sales():
-    if session.get('user') and session.get('user')['type'] == 1:
-        return render_template('admin/sales.html')
-    else:
-        abort(403)
 
 @admin_views.route('/admin/users')
 def admin_users():
     if session.get('user') and session.get('user')['type'] == 1:
         users = User.get_all()
         return render_template('admin/users_admin.html', users=users)
+    else:
+        abort(403)
+
+@admin_views.route('/admin/sales')
+def admin_sales():
+    if session.get('user') and session.get('user')['type'] == 1:
+        return render_template('admin/sales_admin.html')
+    else:
+        abort(403)
+
+@admin_views.route('/admin/comments')
+def admin_comments():
+    if session.get('user') and session.get('user')['type'] == 1:
+        comments = Comment.get_all()
+        return render_template('admin/comments_admin.html', comments=comments)
     else:
         abort(403)
 
