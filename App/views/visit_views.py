@@ -16,14 +16,12 @@ def index():
 def product():
     form = OpinionForm()
     products = Product.get_all()
-    form.id_product.choices = [(product.id_product, product.product_name) for product in products]  
+    form.id_product.choices = [(product.id_product, product.product_name) for product in products]
     opinions = Opinion.get_all()
-    form.id_product.choices = [(opinion.id_product, opinion.id_product) for opinion in opinions]
     if 'user' in session:
         user = session['user']
-        form.date_opinion.data = datetime.date.today()
         form.username_opinion.data = user.get('user_username')
-
+        form.date_opinion.data = datetime.date.today()
     if form.validate_on_submit():
         username_opinion = form.username_opinion.data
         id_product = form.id_product.data

@@ -181,7 +181,7 @@
   {% if 'user' in session %}
   <form method="post" action="{{ url_for('visit.product') }}" enctype="multipart/form-data" class="mt-3"
     style="max-width: 800px; margin: auto;">
-    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
     <div class="form-group">
       <label for="comment_opinion">Opina sobre nuestro producto:</label>
       {{ form.comment_opinion(class="form-control", required="required", placeholder="Ingrese su pregunta o comentario")
@@ -197,13 +197,13 @@
       <select class="form-control" name="{{ form.id_product.name }}">
         <option value="">Selecciona tu producto a calificar...</option>
         {% for id_product, product_name in form.id_product.choices %}
-        <option value="{{ id_product }}">{{ product_name }}</option>
+          <option value="{{ id_product }}">{{ product_name }}</option>
         {% endfor %}
       </select>
       {% if form.id_product.errors %}
-      {% for error in form.id_product.errors %}
-      <p>{{ error }}</p>
-      {% endfor %}
+        {% for error in form.id_product.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
       {% endif %}
     </div>
     <div class="form-group">
@@ -221,7 +221,8 @@
   </form>
   {% else %}
   <p class="text-center">Para opinar sobre nuestro producto, <a href="{{ url_for('home.signin') }}">inicia sesión</a> o
-    <a href="{{ url_for('home.logout') }}">regístrate</a>.</p>
+    <a href="{{ url_for('home.logout') }}">regístrate</a>.
+  </p>
   {% endif %}
   <h3 class="text-center mt-5">Opiniones de otros usuarios</h3>
   <div class="list-group">
