@@ -4,7 +4,7 @@ from .db import get_connection
 mydb = get_connection()
 
 class Sale:
-    def __init__(self, id_sale, id_user, id_product, sale_date, total_sale):
+    def __init__(self, id_sale='', id_user='', id_product='', sale_date='', total_sale=''):
         self.id_sale = id_sale
         self.id_user = id_user
         self.id_product = id_product

@@ -3,7 +3,9 @@ from flask import Blueprint, redirect, render_template, session, abort, url_for
 from models.users import User
 from models.type import Type
 from models.comments import Comment
+from models.products import Product
 from forms.user_forms import RegisterForm, UpdateProfileForm
+from forms.products_forms import RegisterProduct, UpdateProduct
 
 admin_views = Blueprint('admin', __name__)
 
@@ -29,6 +31,61 @@ def admin_comments():
         return render_template('admin/comments_admin.html', comments=comments)
     else:
         abort(403)
+
+@admin_views.route('/admin/products')
+def admin_products():
+    if session.get('user') and session.get('user')['type'] == 1:
+        products = Product.get_all()
+        return render_template('admin/products_admin.html', products=products)
+    else:
+        abort(403)
+
+@admin_views.route('/admin/register/products', methods=('GET', 'POST'))
+def admin_register_products():
+    if session.get('user') and session.get('user')['type'] == 1:
+        form = RegisterProduct()
+        if form.validate_on_submit():
+            product_name = form.product_name.data
+            product_price = form.product_price.data
+            product_description = form.product_description.data
+            product = Product(product_name=product_name, product_price=product_price, product_description=product_description)
+            product.save()
+            return redirect(url_for('admin.admin_products'))
+        
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"Error en el campo '{field}': {error}")
+        return render_template('admin/register_product.html', form=form)
+    else:
+        abort(403)
+
+@admin_views.route('/admin/products/<int:id_product>/update', methods=('GET', 'POST'))
+def admin_update_products(id_product):
+    if session.get('user') and session.get('user')['type'] == 1:
+        form = UpdateProduct()
+        product = Product.get(id_product)
+        if form.validate_on_submit():
+            product = Product.get(id_product)
+            product.product_name = form.product_name.data
+            product.product_price = form.product_price.data
+            product.product_description = form.product_description.data
+            product.update()
+            return redirect(url_for('admin.admin_products'))
+        
+        form.product_name.data = product.product_name
+        form.product_price.data = product.product_price
+        form.product_description.data = product.product_description
+        return render_template('admin/update_product.html', form=form, product=product)
+
+@admin_views.route('/admin/products/<int:id_product>/delete', methods=['POST'])
+def admin_delete_products(id_product):
+    if session.get('user') and session.get('user')['type'] == 1:
+        product = Product.get(id_product)
+        product.delete()
+        return redirect(url_for('admin.admin_products'))
+    else:
+        abort(403)
+
 
 @admin_views.route('/admin/register/users', methods=('GET', 'POST'))
 def admin_register_users():

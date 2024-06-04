@@ -72,16 +72,16 @@ class Opinion:
     def get_all():
         opinions = []
         with mydb.cursor(dictionary=True) as cursor:
-            sql = "SELECT * FROM opinions"
+            sql = "SELECT * FROM vista_opiniones"
             cursor.execute(sql)
             result = cursor.fetchall()
             for row in result:
-                opinion = Opinion(id_opinion=row["id_opinion"],
-                                username_opinion=row["username_opinion"],
-                                id_product=row["id_product"],
-                                rating_product=row["rating_product"],
-                                comment_opinion=row["comment_opinion"],
-                                date_opinion=row["date_opinion"])
+                opinion = Opinion(id_opinion=row["id de opinion"],
+                                username_opinion=row["nombre de usuario"],
+                                id_product=row["nombre del producto"],
+                                rating_product=row["calificacion"],
+                                comment_opinion=row["comentario"],
+                                date_opinion=row["fecha"])
                 opinions.append(opinion)
         return opinions
     
@@ -106,3 +106,4 @@ class Product:
                                     product_description=row["product_description"])
                 products.append(product)
             return products
+        
