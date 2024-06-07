@@ -4,23 +4,27 @@ from .db import get_connection
 mydb = get_connection()
 
 class Product:
-    def __init__(self, id_product='', product_name='', product_price='', product_description=''):
+    def __init__(self, id_product='', product_name='', product_price='', product_description='',product_image = ''):
         self.id_product = id_product
         self.product_name = product_name
         self.product_price = product_price
         self.product_description = product_description
+        self.product_image = product_image
 
     def save(self):
         with mydb.cursor() as cursor:
-            sql = "INSERT INTO products (product_name, product_price, product_description) VALUES (%s, %s, %s)"
-            values = (self.product_name, self.product_price, self.product_description)
+            sql = "INSERT INTO products (product_name, product_price, product_description, product_image) VALUES (%s,%s,%s,%s)"
+            values = (self.product_name, self.product_price, self.product_description, self.product_image)
             cursor.execute(sql, values)
         mydb.commit()
 
     def update(self):
         with mydb.cursor() as cursor:
-            sql = "UPDATE products SET product_name = %s, product_price = %s, product_description = %s WHERE id_product = %s"
-            values = (self.product_name, self.product_price, self.product_description)
+            sql = "UPDATE products SET product_name = %s, product_price = %s, product_description = %s, product_image = %s WHERE id_product = %s"
+            values = (self.product_name, self.product_price, self.product_description, self.product_image, self.id_product)
+            #revisar errores 
+            #print(f"SQL: {sql}")
+            #print(f"Values: {values}")
             cursor.execute(sql, values)
             mydb.commit()
         return self.id_product
@@ -42,7 +46,8 @@ class Product:
                 product = Product(id_product=product["id_product"],
                                 product_name=product["product_name"],
                                 product_price=product["product_price"],
-                                product_description=product["product_description"])
+                                product_description=product["product_description"],
+                                product_image=product["product_image"])
                 return product
             return None
     
@@ -57,6 +62,7 @@ class Product:
                 product = Product(id_product=row["id_product"],
                                 product_name=row["product_name"],
                                 product_price=row["product_price"],
-                                product_description=row["product_description"])
+                                product_description=row["product_description"],
+                                product_image=row["product_image"])
                 products.append(product)
         return products 

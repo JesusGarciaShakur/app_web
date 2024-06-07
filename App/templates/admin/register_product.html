@@ -44,6 +44,16 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
+                    <label>Imagen del producto:</label>
+                    {{ form.product_image.label }}
+                    {{ form.product_image() }}
+                    {% if form.product_image.errors %}
+                        {% for error in form.product_image.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">
                         <i class="fa fa-user-plus"></i> Registrar
                     </button>

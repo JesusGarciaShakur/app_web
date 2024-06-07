@@ -6,6 +6,7 @@ from models.comments import Comment
 from models.products import Product
 from forms.user_forms import RegisterForm, UpdateProfileForm
 from forms.products_forms import RegisterProduct, UpdateProduct
+from utils.file_handler import save_image
 
 admin_views = Blueprint('admin', __name__)
 
@@ -48,7 +49,16 @@ def admin_register_products():
             product_name = form.product_name.data
             product_price = form.product_price.data
             product_description = form.product_description.data
+            f = form.product_image.data
+            
+            # Crear el producto primero
             product = Product(product_name=product_name, product_price=product_price, product_description=product_description)
+            
+            # Si hay una imagen, guardarla después de crear el producto
+            if f:
+                product.product_image = save_image(f, 'images/products', product.product_name)
+            
+            # Guardar el producto en la base de datos
             product.save()
             return redirect(url_for('admin.admin_products'))
         
@@ -65,16 +75,22 @@ def admin_update_products(id_product):
         form = UpdateProduct()
         product = Product.get(id_product)
         if form.validate_on_submit():
-            product = Product.get(id_product)
             product.product_name = form.product_name.data
             product.product_price = form.product_price.data
             product.product_description = form.product_description.data
+            f = form.product_image.data
+            if f:
+                product.product_image = save_image(f, 'images/products', product.product_name)
+            else:
+                product.product_image = product.product_image  # Mantener valor existente si no hay imagen nueva
+            
             product.update()
             return redirect(url_for('admin.admin_products'))
         
         form.product_name.data = product.product_name
         form.product_price.data = product.product_price
         form.product_description.data = product.product_description
+
         return render_template('admin/update_product.html', form=form, product=product)
 
 @admin_views.route('/admin/products/<int:id_product>/delete', methods=['POST'])

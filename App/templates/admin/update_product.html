@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-10"> <!-- Ajuste del ancho de la columna -->
             <h1 class="text-center mb-4">Editar Producto</h1>
-            <form method="post" action="{{ url_for('admin.admin_register_users') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ url_for('admin.admin_update_products', id_product=product.id_product) }}" enctype="multipart/form-data">
                 {{ form.csrf_token }}
                 <div class="form-group">
                     <label>Nombre de Producto:</label>
@@ -25,8 +25,8 @@
                 </div>
                 <div class="form-group">
                     <label>Precio del producto:</label>
-                    {{ form.product_price(class="form-control", required="required", pattern="[0-9]", title="Ingrese una
-                    cantidad valida (solo numeros enteros", placeholder="Precio del producto") }}
+                    {{ form.product_price(class="form-control", required="required", title="Ingrese una
+                    cantidad valida (solo numeros enteros)", placeholder="Precio del producto") }}
                     {% if form.product_price.errors %}
                     {% for error in form.product_price.errors %}
                     <p>{{ error }}</p>
@@ -41,6 +41,16 @@
                     {% for error in form.product_description.errors %}
                     <p>{{ error }}</p>
                     {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label>Imagen del producto:</label>
+                    {{ form.product_image.label }}
+                    {{ form.product_image() }}
+                    {% if form.product_image.errors %}
+                        {% for error in form.product_image.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
                     {% endif %}
                 </div>
                 <div class="form-group">
