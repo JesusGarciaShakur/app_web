@@ -10,20 +10,20 @@ class RegisterForm(FlaskForm):
     user_username = StringField('Nombre de Usuario', validators = [DataRequired(), Length(min=4, max=25)])
     user_name = StringField('Nombre(s)', validators = [DataRequired(), Length(min=4, max=25)])
     user_lastname = StringField('Apellido(s)', validators = [DataRequired(), Length(min=4, max=25)])
-    user_email = EmailField('Correo Electronico', validators = [DataRequired(), Email()])
+    user_email = EmailField('Correo Electrónico', validators = [DataRequired(), Email()])
     user_password = PasswordField('Contraseña', validators = [DataRequired(), Length(min=8)])
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
-    user_direction = StringField('Direccion', validators = [DataRequired(), Length(min=4, max=100)])
-    user_phoneNumber = StringField('Telefono', validators = [DataRequired(),Length(min=10, max=10)])
+    user_direction = StringField('Dirección', validators = [DataRequired(), Length(min=4, max=100)])
+    user_phoneNumber = StringField('Teléfono', validators = [DataRequired(),Length(min=10, max=10)])
     submit = SubmitField('Registrarse')
 
-    #Validar correo electronico unico
+    #Validar correo electrónico único
     def validate_user_email(self, field):
         if User.check_email(field.data):
             raise ValidationError('El correo ya esta en uso')
         
 
-    #Validar username unico
+    #Validar username único
     def validate_user_username(self, field):
         if User.check_username(field.data):
             raise ValidationError('El username ya esta en uso')
@@ -40,9 +40,9 @@ class UpdateProfileForm(FlaskForm):
     user_username = StringField('Nombre de Usuario', validators = [DataRequired(), Length(min=4, max=25)])
     user_name = StringField('Nombre(s)', validators = [DataRequired(), Length(min=4, max=25)])
     user_lastname = StringField('Apellido(s)', validators = [DataRequired(), Length(min=4, max=25)])
-    user_email = EmailField('Correo Electronico', validators = [DataRequired(), Email()])
+    user_email = EmailField('Correo Electrónico', validators = [DataRequired(), Email()])
     user_password = PasswordField('Contraseña', validators = [DataRequired(), Length(min=8)])
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
-    user_direction = StringField('Direccion', validators = [DataRequired(), Length(min=4, max=100)])
-    user_phoneNumber = StringField('Telefono', validators = [DataRequired(),Length(min=10, max=10)])
-    submit = SubmitField('Actualizar informacion')
+    user_direction = StringField('Dirección', validators = [DataRequired(), Length(min=4, max=100)])
+    user_phoneNumber = StringField('Teléfono', validators = [DataRequired(),Length(min=10, max=10)])
+    submit = SubmitField('Actualizar información')

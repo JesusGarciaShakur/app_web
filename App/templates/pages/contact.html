@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Contactanos {% endblock title %}
+{% block title %} Contáctenos {% endblock title %}
 {% block content %}
 
 <head>
@@ -120,7 +120,7 @@
             <input type="checkbox" id="acordeon1">
             <label for="acordeon1">▼ ¿Qué tipo de conexión necesita el dispositivo para funcionar?</label>
             <div class="acordeon-content">
-                <p>Para el funcionamiento del dispostivo se necesitará de una conexión estable a Wi-Fi.</p>
+                <p>Para el funcionamiento del dispositivo se necesitará de una conexión estable a Wi-Fi.</p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
@@ -129,7 +129,7 @@
             <label for="acordeon2">▼ ¿Cuánto tiempo dura la batería del dispositivo?</label>
             <div class="acordeon-content">
                 <p>El dispositivo cuenta con un panel solar, lo cual lo hace autónomo todas los días
-                    al recibir los rayos del sol, el dispostivo se volverá a cargar, por lo que, no tendrás 
+                    al recibir los rayos del sol, el dispositivo se volverá a cargar, por lo que, no tendrás 
                     que preocuparte por la batería restante.</p>
                     <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
@@ -139,7 +139,7 @@
             <label for="acordeon3">▼ ¿Cómo puedo calibrar el sensor ultrasónico para obtener lecturas precisas?</label>
             <div class="acordeon-content">
                 <p>Las alturas proporcionadas por el sensor ultrasónico ya vienen predeterminadas base
-                    a estandares, desde la aplicación solo necesitarás seleccionar el tipo de dispositivo con el
+                    a estándares, desde la aplicación solo necesitarás seleccionar el tipo de dispositivo con el
                     que cuentas.</p>
                     <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
@@ -149,7 +149,7 @@
             <label for="acordeon4">▼ ¿Qué pasa si el sensor no está midiendo correctamente?</label>
             <div class="acordeon-content">
                 <p>En caso de no recibir lecturas correctas, se deberá seleccionar nuevamente el dispositivo, 
-                    en caso de que esto no resuelva el problema, comunicate con nosotros por medio de 
+                    en caso de que esto no resuelva el problema, comunícate con nosotros por medio de 
                     nuestras redes sociales o completando el formulario para dejarnos tu comentario 
                     y de esa manera ponernos en contacto contigo.</p>
                     <hr style="border-top: 1px solid #000; opacity: 0.2;">
@@ -169,7 +169,7 @@
             <input type="checkbox" id="acordeon6">
             <label for="acordeon6">▼ ¿Es compatible el dispositivo con diferentes tamaños de tinacos?</label>
             <div class="acordeon-content">
-                <p>El dispositivo cuenta con los diferentes tamaños de tinacos en base a estandares, por lo cual solo
+                <p>El dispositivo cuenta con los diferentes tamaños de tinacos en base a estándares, por lo cual solo
                     deberás seleccionar el contenedor que tengas disponible.
                 </p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
@@ -179,7 +179,7 @@
             <input type="checkbox" id="acordeon7">
             <label for="acordeon7">▼ ¿Cómo puedo acceder a los datos de capacidad de agua desde la aplicación móvil?</label>
             <div class="acordeon-content">
-                <p>La aplicación móvil te mostrará el porcentaje de agua que tienes disponible en tu dispostivo.</p>
+                <p>La aplicación móvil te mostrará el porcentaje de agua que tienes disponible en tu dispositivo.</p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
@@ -195,8 +195,8 @@
             <input type="checkbox" id="acordeon9">
             <label for="acordeon9">▼ ¿Es posible compartir el acceso a la aplicación con otros usuarios?</label>
             <div class="acordeon-content">
-                <p>Si es posible, todos tus datos estan guardados en una base de datos, gracias a eso 
-                    podras iniciar sesión en diferentes dispositivos, utilizando tu usuario y contraseña.</p>
+                <p>Si es posible, todos tus datos están guardados en una base de datos, gracias a eso 
+                    podrás iniciar sesión en diferentes dispositivos, utilizando tu usuario y contraseña.</p>
                     <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
@@ -204,7 +204,7 @@
             <input type="checkbox" id="acordeon10">
             <label for="acordeon10">▼ ¿Hay alguna forma de integrar este dispositivo con otros sistemas de automatización del hogar?</label>
             <div class="acordeon-content">
-                <p>Al ser un sistema independiente, por el momento no se puede integrar con otros dispostivos de domótica.</p>
+                <p>Al ser un sistema independiente, por el momento no se puede integrar con otros dispositivos de domótica.</p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
@@ -225,7 +225,7 @@
     <div class="row justify-content-center">
         <div class="ask-question">
             {% if 'user' not in session %}
-            <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesion</a> y háznosla saber</p>
+            <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y háznosla saber</p>
             {% else %}
             <p>Tienes alguna otra pregunta, háznosla saber <a href="#" id="toggle-form">da click aquí</a></p>
             {% endif %}

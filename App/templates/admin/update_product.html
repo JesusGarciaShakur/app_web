@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label>Precio del producto:</label>
                     {{ form.product_price(class="form-control", required="required", title="Ingrese una
-                    cantidad valida (solo numeros enteros)", placeholder="Precio del producto") }}
+                    cantidad valida (solo números enteros)", placeholder="Precio del producto") }}
                     {% if form.product_price.errors %}
                     {% for error in form.product_price.errors %}
                     <p>{{ error }}</p>
@@ -34,9 +34,9 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    <label>Descripcion del producto:</label>
+                    <label>Descripción del producto:</label>
                     {{ form.product_description(class="form-control", required="required", title="Solo letras y espacios
-                    son permitidos", placeholder="Descripcion del producto") }}
+                    son permitidos", placeholder="Descripción del producto") }}
                     {% if form.product_description.errors %}
                     {% for error in form.product_description.errors %}
                     <p>{{ error }}</p>

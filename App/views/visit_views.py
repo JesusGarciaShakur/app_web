@@ -18,6 +18,7 @@ def product():
     products = Product.get_all()
     form.id_product.choices = [(product.id_product, product.product_name) for product in products]
     opinions = Opinion.get_all()
+    product = Product.get_all()
     if 'user' in session:
         user = session['user']
         form.username_opinion.data = user.get('user_username')
@@ -35,7 +36,7 @@ def product():
                         date_opinion=date_opinion)
         opinion.save()
         return redirect(url_for('visit.product'))
-    return render_template('pages/product.html', form=form, opinions=opinions)
+    return render_template('pages/product.html', form=form, opinions=opinions, products=products)
 
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
