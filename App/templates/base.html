@@ -47,9 +47,9 @@
                             <a class="nav-link far fa-user-circle" style='font-size:22px' href="{{ url_for('home.signin') }}"></a>
                         </li>
                         {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link fas fa-sign-out-alt" style='font-size:22px' href="{{ url_for('home.logout') }}"></a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link far fa-user-circle" style='font-size:22px' href="{{ url_for('visit.profile') }}"></a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>

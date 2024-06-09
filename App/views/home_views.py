@@ -17,6 +17,7 @@ def signin():
             print("Authentication failed: Invalid username or password")
         else:
             session['user'] = {
+                'id_user': user.id_user,
                 'user_email': user.user_email,
                 'user_username': user.user_username,
                 'type': user.id_type

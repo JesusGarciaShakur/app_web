@@ -119,7 +119,14 @@ def admin_register_users():
             user_password = form.user_password.data
             user_direction = form.user_direction.data
             user_phoneNumber = form.user_phoneNumber.data
-            user = User(id_type=id_type, user_username=user_username, user_name=user_name, user_lastname=user_lastname, user_email=user_email, user_password=user_password, user_direction=user_direction, user_phoneNumber=user_phoneNumber)
+            f = form.user_image.data
+            # Crear el usuario primero
+            user = User(id_type=id_type, user_username=user_username, user_name=user_name, user_lastname=user_lastname, 
+                        user_email=user_email, user_password=user_password, 
+                        user_direction=user_direction, user_phoneNumber=user_phoneNumber)
+            # Si hay una imagen, guardarla después de crear el usuario
+            if f:
+                user.user_image = save_image(f, 'images/profiles', user.user_username)
             user.save()
 
             return redirect(url_for('admin.admin_users'))
@@ -148,6 +155,11 @@ def admin_update_users(id_user):
             user.user_password = form.user_password.data
             user.user_direction = form.user_direction.data
             user.user_phoneNumber = form.user_phoneNumber.data
+            f = form.user_image.data
+            if f:
+                user.user_image = save_image(f, 'images/profiles', user.user_username)
+            else:
+                user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
             user.update()
             return redirect(url_for('admin.admin_users'))
         

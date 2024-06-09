@@ -1,5 +1,6 @@
 # user_views.py
 from flask import Blueprint, render_template, redirect, url_for # type: ignore
+from utils.file_handler import save_image # type: ignore
 from models.users import User, Type
 from forms.user_forms import RegisterForm, UpdateProfileForm
 # Importaciones comments
@@ -46,6 +47,11 @@ def update(id_user):
         user.user_password = form.user_password.data
         user.user_direction = form.user_direction.data
         user.user_phoneNumber = form.user_phoneNumber.data
+        f = form.user_image.data
+        if f:
+            user.user_image = save_image(f, 'images/profiles', user.user_username)
+        else:
+            user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
         user.update()
         return redirect(url_for('visit.index'))
         # Actualiza los atributos del usuario con los datos ingresados

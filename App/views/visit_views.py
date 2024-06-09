@@ -1,10 +1,14 @@
 import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, session
+from forms.user_forms import UpdateProfileForm
+from utils.file_handler import save_image
 from models.comments import Comment
 from models.opinions import Opinion
 from models.products import Product
+from models.users import User
 from forms.comment_forms import CommentForm
 from forms.opinion_forms import OpinionForm
+
 
 visit_views = Blueprint('visit', __name__)
 
@@ -64,3 +68,46 @@ def contact():
 @visit_views.route('/company')
 def company():
     return render_template('pages/company.html')
+
+@visit_views.route('/profile')
+def profile():
+    user = User.__get__(id_user=session['user']['id_user'])
+    return render_template('pages/profile.html', user=user)
+
+
+@visit_views.route('/users/<int:id_user>/update/', methods=('GET', 'POST'))
+def update_profile(id_user):
+    form = UpdateProfileForm()
+    user = User.get(id_user)
+    if form.validate_on_submit():
+        user.id_type = form.id_type.data
+        user.username = form.user_username.data
+        user.user_name = form.user_name.data
+        user.user_lastname = form.user_lastname.data
+        user.user_email = form.user_email.data
+        user.user_password = form.user_password.data
+        user.user_direction = form.user_direction.data
+        user.user_phoneNumber = form.user_phoneNumber.data
+        f = form.user_image.data
+        if f:
+            user.user_image = save_image(f, 'images/profiles', user.user_username)
+        else:
+            user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
+        user.update()
+        return redirect(url_for('visit.index'))
+        # Actualiza los atributos del usuario con los datos ingresados
+    form.id_type.data = user.id_type
+    form.user_username.data = user.user_username
+    form.user_name.data = user.user_name
+    form.user_lastname.data = user.user_lastname
+    form.user_email.data = user.user_email
+    form.user_password.data = user.user_password
+    form.user_direction.data = user.user_direction
+    form.user_phoneNumber.data = user.user_phoneNumber
+    return render_template('pages/update_profile.html', form=form, user=user)
+
+@visit_views.route('/users/<int:id_user>/delete/', methods=['POST'])
+def delete_profile(id_user):
+    user = User.get(id_user)
+    user.delete()
+    return redirect(url_for('visit.index'))

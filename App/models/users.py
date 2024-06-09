@@ -6,7 +6,7 @@ mydb = get_connection()
 
 class User:
     def __init__(self, id_user='', id_type='', user_username='', user_name='', 
-                user_lastname='', user_email='', user_password='', user_direction='', user_phoneNumber=''):
+                user_lastname='', user_email='', user_password='', user_direction='', user_phoneNumber='', user_image=''):
         self.id_user = id_user
         self.id_type = id_type
         self.user_username = user_username
@@ -16,20 +16,21 @@ class User:
         self.user_password = user_password
         self.user_direction = user_direction
         self.user_phoneNumber = user_phoneNumber
+        self.user_image = user_image
 
     def save(self):
         with mydb.cursor() as cursor:
             self.user_password = generate_password_hash(self.user_password)
-            sql = "INSERT INTO users (id_type, user_username, user_name, user_lastname, user_email, user_password, user_direction, user_phoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber)
+            sql = "INSERT INTO users (id_type, user_username, user_name, user_lastname, user_email, user_password, user_direction, user_phoneNumber, user_image) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber, self.user_image)
             cursor.execute(sql, values)
         mydb.commit() 
 
     def update(self):
         with mydb.cursor() as cursor:
             self.user_password = generate_password_hash(self.user_password)
-            sql = "UPDATE users SET id_type=%s, user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_password=%s, user_direction=%s, user_phoneNumber=%s WHERE id_user = %s"
-            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber, self.id_user)
+            sql = "UPDATE users SET id_type=%s, user_username=%s, user_name=%s, user_lastname=%s, user_email=%s, user_password=%s, user_direction=%s, user_phoneNumber=%s, user_image=%s WHERE id_user = %s"
+            values = (self.id_type, self.user_username, self.user_name, self.user_lastname, self.user_email, self.user_password, self.user_direction, self.user_phoneNumber, self.user_image, self.id_user)
             #revisar errores 
             # print(f"SQL: {sql}")
             # print(f"Values: {values}")
@@ -59,7 +60,8 @@ class User:
                             user_email=user["user_email"],
                             user_password=user["user_password"],
                             user_direction=user["user_direction"],
-                            user_phoneNumber=user["user_phoneNumber"])
+                            user_phoneNumber=user["user_phoneNumber"],
+                            user_image=user["user_image"])
                 return user
             return None
 
@@ -78,7 +80,8 @@ class User:
                             user_email=user["user_email"],
                             user_password=user["user_password"],
                             user_direction=user["user_direction"],
-                            user_phoneNumber=user["user_phoneNumber"])
+                            user_phoneNumber=user["user_phoneNumber"],
+                            user_image=user["user_image"])
                 return user
             return None
         

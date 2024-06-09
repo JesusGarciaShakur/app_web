@@ -3,6 +3,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, EmailField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from models.users import User
+from flask_wtf.file import FileAllowed
+from flask_wtf.file import FileField
 
 #Clase para registro
 class RegisterForm(FlaskForm):
@@ -15,6 +17,7 @@ class RegisterForm(FlaskForm):
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
     user_direction = StringField('Dirección', validators = [DataRequired(), Length(min=4, max=100)])
     user_phoneNumber = StringField('Teléfono', validators = [DataRequired(),Length(min=10, max=10)])
+    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg'], 'Solo imágenes con extension png, jpg!')])
     submit = SubmitField('Registrarse')
 
     #Validar correo electrónico único
@@ -45,4 +48,5 @@ class UpdateProfileForm(FlaskForm):
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
     user_direction = StringField('Dirección', validators = [DataRequired(), Length(min=4, max=100)])
     user_phoneNumber = StringField('Teléfono', validators = [DataRequired(),Length(min=10, max=10)])
+    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg'], 'Solo imágenes con extension png, jpg!')])
     submit = SubmitField('Actualizar información')
