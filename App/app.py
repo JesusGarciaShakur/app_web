@@ -4,7 +4,6 @@ from flask import Flask
 from views.admin_views import admin_views
 from views.visit_views import visit_views
 from views.user_views import user_views
-from views.legal_views import legal_views
 from views.home_views import home_views
 from views.error_views import error_views
 
@@ -16,7 +15,6 @@ app.config['SECRET_KEY'] = 'My Secret Key'
 app.register_blueprint(admin_views)
 app.register_blueprint(visit_views)
 app.register_blueprint(user_views)
-app.register_blueprint(legal_views)
 app.register_blueprint(home_views)
 app.register_blueprint(error_views)
 

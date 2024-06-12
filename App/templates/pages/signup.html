@@ -73,7 +73,7 @@ Registrar nuevo Usuario
                 <input type="hidden" name="id_type" value="2"> <!-- Campo oculto para id_type -->
                 <div class="form-check text-start my-3">
                     <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault"><a href="{{ url_for('legal.terms_of_service') }}">Políticas de privacidad</a></label>
+                    <label class="form-check-label" for="flexCheckDefault"><a href="#" data-toggle="modal" data-target="#TTCModal">Políticas de privacidad</a></label>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block" disabled id="submitBtn">
@@ -84,10 +84,45 @@ Registrar nuevo Usuario
         </div>
     </div>
 </div>
+    <!-- Términos y Condiciones Modal -->
+    <div class="modal fade" id="TTCModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Políticas de privacidad</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h1>Política de Privacidad del Sistema de Gestión de Inventario Textiles RG</h1>
+                    <p>En MestliCode, estamos comprometidos con la protección de la privacidad de nuestros usuarios y garantizamos la confidencialidad de la información personal que recopilamos. Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos y compartimos la información personal de los usuarios de nuestro Sistema de Gestión de Inventario. Al usar nuestro sistema, aceptas los términos y condiciones establecidos en esta Política de Privacidad.</p>
+                    <p><strong>Información que recopilamos:</strong><br>
+                        - Información personal: Podemos recopilar información personal como nombre, dirección de correo electrónico y número de teléfono cuando nos la proporcionas voluntariamente.<br>
+                        - Información de uso: También recopilamos información de uso como datos de inicio de sesión, actividad en el sistema y preferencias para mejorar nuestros servicios y personalizar la experiencia del usuario.</p>
+                    <p><strong>Uso de la información recopilada:</strong><br>
+                        - Utilizamos la información personal para proporcionar acceso y soporte técnico, procesar pagos y enviar actualizaciones relevantes.<br>
+                    <p><strong>Almacenamiento de la información:</strong><br>
+                        - Tomamos medidas razonables para proteger la información personal almacenada en nuestros servidores, utilizando medidas de seguridad físicas y técnicas para evitar el acceso no autorizado.<br>
+                        - Retenemos la información personal solo durante el tiempo necesario, a menos que la ley requiera un período de retención más prolongado.</p>
+                    <p><strong>Compartir información con terceros:</strong><br>
+                        - No vendemos ni alquilamos información personal a terceros sin consentimiento, excepto cuando sea necesario para brindar servicios o cumplir con obligaciones legales.<br>
+                        - Compartimos información de uso agregada y anónima con terceros para análisis y mejora del sistema.</p>
+                    <p><strong>Cambios en la Política de Privacidad:</strong><br>
+                        Nos reservamos el derecho de actualizar esta Política de Privacidad. Publicaremos una versión actualizada y notificaremos cualquier cambio material. Te recomendamos revisarla periódicamente.</p>
+                    <p><strong>Contacto:</strong><br>
+                        Si tienes preguntas o deseas ejercer tus derechos de privacidad, contáctenos a través de los canales de soporte en nuestro sistema.</p>
+                    <p>Al utilizar nuestro sistema, reconoces haber leído y comprendido esta Política de Privacidad, aceptando nuestros términos y condiciones.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     const checkbox = document.getElementById('flexCheckDefault');
     const submitBtn = document.getElementById('submitBtn');
-
     checkbox.addEventListener('change', function () {
         submitBtn.disabled = !this.checked;
     });

@@ -35,8 +35,11 @@
                         <p><strong>Número de teléfono:</strong> {{ user.user_phoneNumber }}</p>
                     </div>
                     <div class="text-center mt-3">
-                        <a class="btn btn-primary" href="{{ url_for('user.update', id_user=user.id_user) }}">
+                        <a class="btn btn-primary" href="{{ url_for('visit.update_info', id_user=user.id_user) }}">
                             <i class="fa fa-edit"></i> Actualizar perfil
+                        </a>
+                        <a class="btn btn-primary" href="{{ url_for('visit.update_profile', id_user=user.id_user) }}">
+                            <i class="fa fa-edit"></i> Cambiar contraseña
                         </a>
                         <a class="btn btn-primary" href="{{ url_for('home.logout') }}">
                             <i class="fas fa-sign-out-alt"></i> Cerrar sesión

@@ -4,7 +4,7 @@ from models.users import User
 from models.type import Type
 from models.comments import Comment
 from models.products import Product
-from forms.user_forms import RegisterForm, UpdateProfileForm
+from forms.user_forms import RegisterForm, UpdateUserForm
 from forms.products_forms import RegisterProduct, UpdateProduct
 from utils.file_handler import save_image
 
@@ -142,7 +142,7 @@ def admin_register_users():
 @admin_views.route('/admin/users/<int:id_user>/update', methods=('GET', 'POST'))
 def admin_update_users(id_user):
     if session.get('user') and session.get('user')['type'] == 1:
-        form = UpdateProfileForm()
+        form = UpdateUserForm()
         types = Type.get_all()
         form.id_type.choices = [(type.id_type, type.type_name) for type in types]
         user = User.get(id_user)

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Editar información
+{% endblock title %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container justify-content-center align-items-center" style="max-width: 600px; border: 1px solid black; border-radius: 10px; padding: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="text-center mb-4">Actualizar Información de Perfil</h1>
+            <form method="post" action="{{ url_for('visit.update_info', id_user=user.id_user) }}" enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label>Nombre(s):</label>
+                    {{ form.user_name(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Nombre(s)") }}
+                    {% for error in form.user_name.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Apellido(s):</label>
+                    {{ form.user_lastname(class="form-control", required="required", pattern="[A-Za-z\\s]+", title="Solo letras y espacios son permitidos", placeholder="Apellido(s)") }}
+                    {% for error in form.user_lastname.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="adress1">Dirección:</label>
+                    {{ form.user_direction(class="form-control", id="adress", required="required", placeholder="Ingrese su dirección") }}
+                    {% for error in form.user_direction.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Teléfono:</label>
+                    {{ form.user_phoneNumber(class="form-control", required="required", pattern="[0-9]{10}", title="Ingrese un número de teléfono válido", placeholder="Ingrese su número de teléfono") }}
+                    {% for error in form.user_phoneNumber.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa fa-edit"></i> Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

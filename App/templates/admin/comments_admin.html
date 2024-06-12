@@ -18,7 +18,6 @@
                 <table class="table table-striped table-bordered rounded table-hover" style="background-color: white;" id="Table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ID de Comentario</th>
                             <th>Nombre de Usuario</th>
                             <th>Email de Usuario</th>
                             <th>Fecha de Comentario</th>
@@ -28,7 +27,6 @@
                     <tbody>
                         {% for comment in comments %}
                         <tr>
-                            <td>{{ comment.id_comment }}</td>
                             <td>{{ comment.nameUser_comment }}</td>
                             <td>{{ comment.email_comment }}</td>
                             <td>{{ comment.date_comment }}</td>

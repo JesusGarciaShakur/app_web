@@ -17,7 +17,6 @@ Lista de ventas
                 <table class="table table-striped table-bordered rounded table-hover" style="background-color: white;" id="Table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ID de Venta</th>
                             <th>ID de Usuario</th>
                             <th>Nombre de Usuario</th>
                             <th>ID de Producto</th>
@@ -30,7 +29,6 @@ Lista de ventas
                     <tbody>
                         {% for product in products %}
                         <tr>
-                            <td>{{ product.id_product }}</td>
                             <td>{{ product.name_product }}</td>
                             <td>{{ product.size }}</td>
                             <td>{{ product.price }}</td>

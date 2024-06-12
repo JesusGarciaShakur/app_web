@@ -1,11 +1,11 @@
 import datetime
-from flask import Blueprint, render_template, redirect, url_for, flash, session
-from forms.user_forms import UpdateProfileForm
+from flask import Blueprint, abort, render_template, redirect, url_for, flash, session
+from forms.user_forms import UpdateUserVisitForm, UpdateProfileForm
 from utils.file_handler import save_image
 from models.comments import Comment
 from models.opinions import Opinion
 from models.products import Product
-from models.users import User
+from models.users import Type, User
 from forms.comment_forms import CommentForm
 from forms.opinion_forms import OpinionForm
 
@@ -75,19 +75,44 @@ def profile():
     return render_template('pages/profile.html', user=user)
 
 
-@visit_views.route('/users/<int:id_user>/update/', methods=('GET', 'POST'))
+@visit_views.route('/users/<int:id_user>/update/info', methods=('GET', 'POST'))
+def update_info(id_user):
+    # Verifica si el ID del usuario en la sesión coincide con el ID en la URL
+    logged_in_id_user = session['user']['id_user']
+    if logged_in_id_user != id_user:
+        abort(403)
+    form = UpdateUserVisitForm()
+    user = User.get(id_user)
+    if form.validate_on_submit():
+        user.user_name = form.user_name.data
+        user.user_lastname = form.user_lastname.data
+        user.user_direction = form.user_direction.data
+        user.user_phoneNumber = form.user_phoneNumber.data
+        user.update()
+        return redirect(url_for('visit.index'))
+        # Actualiza los atributos del usuario con los datos ingresados
+
+    form.user_name.data = user.user_name
+    form.user_lastname.data = user.user_lastname
+    form.user_direction.data = user.user_direction
+    form.user_phoneNumber.data = user.user_phoneNumber
+    return render_template('pages/update_info.html', form=form, user=user)
+
+@visit_views.route('/users/<int:id_user>/update/profile', methods=('GET', 'POST'))
 def update_profile(id_user):
+        # Verifica si el ID del usuario en la sesión coincide con el ID en la URL
+    logged_in_id_user = session['user']['id_user']
+    if logged_in_id_user != id_user:
+        abort(403)
     form = UpdateProfileForm()
+    types = Type.get_all()
+    form.id_type.choices = [(type.id_type, type.type_name) for type in types]
     user = User.get(id_user)
     if form.validate_on_submit():
         user.id_type = form.id_type.data
-        user.username = form.user_username.data
-        user.user_name = form.user_name.data
-        user.user_lastname = form.user_lastname.data
+        user.user_username = form.user_username.data
         user.user_email = form.user_email.data
         user.user_password = form.user_password.data
-        user.user_direction = form.user_direction.data
-        user.user_phoneNumber = form.user_phoneNumber.data
         f = form.user_image.data
         if f:
             user.user_image = save_image(f, 'images/profiles', user.user_username)
@@ -95,15 +120,17 @@ def update_profile(id_user):
             user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
         user.update()
         return redirect(url_for('visit.index'))
-        # Actualiza los atributos del usuario con los datos ingresados
+    else:
+        # Imprimir errores de validación para depuración
+        print(form.errors)
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error en el campo {field}: {error}", 'danger')
+
     form.id_type.data = user.id_type
     form.user_username.data = user.user_username
-    form.user_name.data = user.user_name
-    form.user_lastname.data = user.user_lastname
     form.user_email.data = user.user_email
     form.user_password.data = user.user_password
-    form.user_direction.data = user.user_direction
-    form.user_phoneNumber.data = user.user_phoneNumber
     return render_template('pages/update_profile.html', form=form, user=user)
 
 @visit_views.route('/users/<int:id_user>/delete/', methods=['POST'])

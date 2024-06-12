@@ -4,16 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> SMCA {% block title %}{% endblock %}</title>
+    <title>SMCA {% block title %}{% endblock %}</title>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/fonts.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style>
-        .content {
-            padding-bottom: 200px; /* Ajusta el padding inferior para dejar espacio para el footer */
+        .icon-facebook,
+        .icon-twitter,
+        .icon-instagram,
+        .icon-github {
+            color: white !important;
+            /* Asegura que el color blanco prevalezca */
         }
+
+        .logo {
+            height: 100px;
+            width: 120px;
+        }
+
+        .content {
+            padding-bottom: 200px;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #back-to-top:hover {
+            background-color: #0056b3;
+        }
+        
     </style>
 </head>
 
@@ -44,12 +97,14 @@
                         </li>
                         {% if 'user' not in session %}
                         <li class="nav-item">
-                            <a class="nav-link far fa-user-circle" style='font-size:22px' href="{{ url_for('home.signin') }}"></a>
+                            <a class="nav-link far fa-user-circle" style='font-size:22px'
+                                href="{{ url_for('home.signin') }}"></a>
                         </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link far fa-user-circle" style='font-size:22px' href="{{ url_for('visit.profile') }}"></a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link far fa-user-circle" style='font-size:22px'
+                                href="{{ url_for('visit.profile') }}"></a>
+                        </li>
                         {% endif %}
                     </ul>
                 </div>
@@ -70,31 +125,117 @@
                 <div class="col-md-4">
                     <h5>Información Legal</h5>
                     <ul>
-                        <li><a href="{{ url_for('legal.legal_information') }}" class="footer-link">Términos y Condiciones</a></li>
-                        <li><a href="{{ url_for('legal.privacy_policy') }}" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="#" class="footer-link" data-toggle="modal" data-target="#termsModal">Términos y
+                                Condiciones</a></li>
+                        <li><a href="#" class="footer-link" data-toggle="modal" data-target="#privacyModal">Política de
+                                Privacidad</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h5>Síguenos</h5>
                     <ul class="list-inline justify-content-center">
-                        <li class="list-inline-item"><a href="http://www.facebook.com/" target="_blank" class="icon-facebook"></a></li>
-                        <li class="list-inline-item"><a href="http://www.twitter.com/" target="_blank" class="icon-twitter"></a></li>
-                        <li class="list-inline-item"><a href="http://www.instagram.com/" target="_blank" class="icon-instagram"></a></li>
-                        <li class="list-inline-item"><a href="http://www.github.com/" target="_blank" class="icon-github"></a></li>
+                        <li class="list-inline-item"><a href="http://www.facebook.com/" target="_blank"
+                                class="icon-facebook"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a href="http://www.twitter.com/" target="_blank"
+                                class="icon-twitter"><i class="fab fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="http://www.instagram.com/" target="_blank"
+                                class="icon-instagram"><i class="fab fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="http://www.github.com/" target="_blank"
+                                class="icon-github"><i class="fab fa-github"></i></a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </footer>
 
-    <button id="back-to-top" title="Volver arriba" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
-        style="text-align: center; position: fixed; z-index: 9999;"><i class="fas fa-arrow-up"></i></button>
+    <!-- Términos y Condiciones Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Términos y Condiciones</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2>Aviso Legal</h2>
+                    <h3>MestliCode</h3>
+                    <p>A través del Sitio Web, ofrecemos a los Usuarios la posibilidad de acceder a la información sobre nuestros servicios de desarrollo de software.</p>
+                    <h3>Privacidad y Tratamiento de Datos</h3>
+                    <p>Cumplimos con la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD). Los datos personales recabados se tratarán conforme a nuestra Política de Privacidad.</p>
+                    <h3>Propiedad Industrial e Intelectual</h3>
+                    <p>Respetamos los derechos de propiedad intelectual e industrial de terceros. No está permitida la reproducción total o parcial de los contenidos del sitio web sin autorización.</p>
+                    <h3>Obligaciones y Responsabilidades del Usuario del Espacio Web</h3>
+                    <p>Los usuarios deben utilizar el sitio web de manera lícita y conforme a las condiciones establecidas. No se permite el uso indebido o malicioso del sitio web.</p>
+                    <h3>Responsabilidades</h3>
+                    <p>No nos hacemos responsables de los daños o perjuicios derivados del uso del sitio web. No garantizamos la disponibilidad continua y sin interrupciones del sitio web.</p>
+                    <h3>Hipervínculos</h3>
+                    <p>El sitio web puede contener enlaces a otras páginas externas. No nos responsabilizamos de su contenido ni de las prácticas de privacidad de dichos sitios.</p>
+                    <h3>Protección de Datos</h3>
+                    <p>Consulta nuestra Política de Cookies para obtener información sobre el uso de cookies en el sitio web.</p>
+                    <h3>Propiedad Intelectual</h3>
+                    <p>Todos los derechos de propiedad intelectual del contenido del sitio web son propiedad de MestliCode o de terceros. No está permitida la reproducción, distribución, comunicación pública o transformación sin autorización.</p>
+                    <h3>Ley Aplicable y Jurisdicción</h3>
+                    <p>Este aviso legal se rige por la legislación española. Cualquier controversia se someterá a los tribunales de el estado de Tlaxcala.</p>
+                    <h3>Fecha de última actualización: 10/03/2024</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Política de Privacidad Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Política de Privacidad</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2>Política de Privacidad</h2>
+                    MestliCode
+                    <h3>Objeto</h3>
+                    <p>A través del Sitio Web, ofrecemos a los Usuarios la posibilidad de acceder a la información sobre nuestros servicios de desarrollo de software.</p>
+                    <h3>Privacidad y Tratamiento de Datos</h3>
+                    <p>Cumplimos con la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD). Los datos personales recabados se tratarán conforme a nuestra Política de Privacidad.
+                    </p>
+                    <h3>Propiedad Industrial e Intelectual</h3>
+                    <p>Respetamos los derechos de propiedad intelectual e industrial de terceros. No está permitida la reproducción total o parcial de los contenidos del sitio web sin autorización.</p>
+                    <h3>Obligaciones y Responsabilidades del Usuario del Espacio Web</h3>
+                    <p>Los usuarios deben utilizar el sitio web de manera lícita y conforme a las condiciones establecidas. No se permite el uso indebido o malicioso del sitio web.
+                    </p>
+                    <h3>Responsabilidades</h3>
+                    <p>No nos hacemos responsables de los daños o perjuicios derivados del uso del sitio web. No garantizamos la disponibilidad continua y sin interrupciones del sitio web.</p>
+                    <h3>Hipervínculos</h3>
+                    <p>El sitio web puede contener enlaces a otras páginas externas. No nos responsabilizamos de su contenido ni de las prácticas de privacidad de dichos sitios.</p>
+                    <h3>Protección de Datos</h3>
+                    <p>Consulta nuestra Política de Cookies para obtener información sobre el uso de cookies en el sitio web.</p>
+                    <p>Fecha de última actualización: 10/03/2024</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <button id="back-to-top" title="Volver arriba" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/scroll.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/stars.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 </body>
 
 </html>
