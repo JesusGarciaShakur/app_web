@@ -49,11 +49,14 @@ def product_list():
     form = RegisterSaleForm()
     products = Product.get_all()
     form.id_product.choices = [(product.id_product, product.product_name) for product in products]
+    product_prices = {product.id_product: product.product_price for product in products}  # Crear un diccionario con los precios
+
     if 'user' in session:
         user = session['user']
         form.userName_sale.data = user.get('user_username')
         form.direction.data = user.get('user_direction')
         form.sale_date.data = datetime.date.today()
+
     if form.validate_on_submit():
         userName_sale = form.userName_sale.data
         id_product = form.id_product.data
@@ -61,16 +64,18 @@ def product_list():
         total_sale = form.total_sale.data
         direction = form.direction.data
         pieces = form.pieces.data
-        sale = Sale(userName_sale=userName_sale,
-                        id_product=id_product,
-                        sale_date=sale_date,
-                        total_sale=total_sale,
-                        direction=direction,
-                        pieces=pieces)
+        sale = Sale(
+            userName_sale=userName_sale,
+            id_product=id_product,
+            sale_date=sale_date,
+            total_sale=total_sale,
+            direction=direction,
+            pieces=pieces
+        )
         sale.save()
         return redirect(url_for('visit.product_list'))
-    return render_template('pages/list_products.html', form=form, products=products)
 
+    return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products)
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = CommentForm()

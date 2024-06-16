@@ -3,64 +3,144 @@
 {% block title %} Lista de Productos {% endblock title %}
 
 {% block content %}
-<div class="form-group mb-0">
-    <form method="post" action="{{ url_for('visit.product_list') }}" enctype="multipart/form-data" class="mt-3"
-        style="max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-        {{ form.csrf_token }}
-        <!-- Campo para seleccionar el producto -->
-        {{ form.id_product.label }}
-        <select class="form-control custom-select" name="{{ form.id_product.name }}">
-            <option value="">Selecciona tu producto...</option>
-            {% for id_product, product_name in form.id_product.choices %}
-                <option value="{{ id_product }}">{{ product_name }}</option>
-            {% endfor %}
-        </select>
-        {% if form.id_product.errors %}
+
+<div class="container py-5">
+    <div class="row justify-content-center"> <!-- Agregamos la clase justify-content-center aquí -->
+        <div class="col-12">
+            {% if 'user' not in session %}
+            <h2 class="text-center mb-4">Adquirir el AquaTI</h2>
+            <p class="text-center">Si deseas adquirir nuestro dispositivo
+                <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a>
+                , o <a class="download1" href="{{ url_for('home.logout') }}">regístrate</a>
+                para que puedas adquirir el dispositivo
+            </p>
+            <br>
+            {% else %}
+            <div id="firebaseui-auth-container" class="w-100">
+                <h2 class="text-center mb-10">Lista de productos</h2>
+                <div class="row no-gutters justify-content-center">
+                    <!-- También agregamos la clase justify-content-center aquí -->
+                    {% for product in products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ url_for('static', filename='images/products/' + product.product_image) }}"
+                                class="card-img-top" alt="Imagen del producto">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.product_name }}</h5>
+                                <p class="card-text">{{ product.product_description }}</p>
+                                <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                                <h6 class="card-text"><strong>Precio: </strong>{{ product.product_price }}</h6>
+                            </div>
+                        </div>
+                    </div>&nbsp;
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <hr style="border-top: 1px solid #000; opacity: 0.2;">
+            <br>
+        </div>
+    </div>
+    <div class="form-group mb-0">
+        <form method="post" action="{{ url_for('visit.product_list') }}" enctype="multipart/form-data" class="mt-3"
+            style="max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            {{ form.csrf_token }}
+            <!-- Campo para seleccionar el producto -->
+            {{ form.id_product.label }}
+            <select id="id_product_select" class="form-control custom-select" name="{{ form.id_product.name }}">
+                <option value="">Selecciona tu producto...</option>
+                {% for id_product, product_name in form.id_product.choices %}
+                <option value="{{ id_product }}" data-price="{{ product_prices[id_product] }}">{{ product_name }}
+                </option>
+                {% endfor %}
+            </select>
+            {% if form.id_product.errors %}
             {% for error in form.id_product.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
-        <!-- Otros campos del formulario -->
-        {{ form.userName_sale.label }}
-        {{ form.userName_sale(class="form-control") }}
-        {% if form.userName_sale.errors %}
+            {% endif %}
+
+            <!-- Campo para mostrar el precio del producto seleccionado -->
+            <div id="product_price_container">
+                Precio: <span id="product_price">-</span>
+            </div>
+
+            <!-- Otros campos del formulario -->
+            {{ form.userName_sale.label }}
+            {{ form.userName_sale(class="form-control") }}
+            {% if form.userName_sale.errors %}
             {% for error in form.userName_sale.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
-        {{ form.direction.label }}
-        {{ form.direction(class="form-control") }}
-        {% if form.direction.errors %}
+            {% endif %}
+
+            {{ form.direction.label }}
+            {{ form.direction(class="form-control") }}
+            {% if form.direction.errors %}
             {% for error in form.direction.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
-        {{ form.sale_date.label }}
-        {{ form.sale_date(class="form-control") }}
-        {% if form.sale_date.errors %}
+            {% endif %}
+            {{ form.sale_date.label }}
+            {{ form.sale_date(class="form-control") }}
+            {% if form.sale_date.errors %}
             {% for error in form.sale_date.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
+            {% endif %}
 
-        {{ form.total_sale.label }}
-        {{ form.total_sale(class="form-control") }}
-        {% if form.total_sale.errors %}
+            {{ form.total_sale.label }}
+            {{ form.total_sale(class="form-control", id="total_sale") }}
+            {% if form.total_sale.errors %}
             {% for error in form.total_sale.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
+            {% endif %}
 
-        {{ form.pieces.label }}
-        {{ form.pieces(class="form-control") }}
-        {% if form.pieces.errors %}
+            {{ form.pieces.label }}
+            {{ form.pieces(class="form-control", id="pieces") }}
+            {% if form.pieces.errors %}
             {% for error in form.pieces.errors %}
-                <p>{{ error }}</p>
+            <p>{{ error }}</p>
             {% endfor %}
-        {% endif %}
+            {% endif %}
 
-        <!-- Botón de submit -->
-        <button type="submit" class="btn btn-primary mt-3">Guardar Venta</button>
-    </form>
+            <!-- Botón de submit -->
+            <button type="submit" class="btn btn-primary mt-3">Guardar Venta</button>
+        </form>
+
+        <script>
+            // Script para manejar el cambio de producto y cálculo del total
+            document.addEventListener('DOMContentLoaded', function () {
+                const idProductSelect = document.getElementById('id_product_select');
+                const productPrice = document.getElementById('product_price');
+                const totalSaleInput = document.getElementById('total_sale');
+                const piecesInput = document.getElementById('pieces');
+
+                idProductSelect.addEventListener('change', function () {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const price = selectedOption.getAttribute('data-price');
+                    productPrice.textContent = price; // Mostrar el precio del producto seleccionado
+
+                    // Calcular el total cuando cambia el producto o las piezas
+                    calculateTotal();
+                });
+
+                piecesInput.addEventListener('input', function () {
+                    calculateTotal();
+                });
+
+                function calculateTotal() {
+                    const price = parseFloat(productPrice.textContent);
+                    const pieces = parseFloat(piecesInput.value);
+
+                    if (!isNaN(price) && !isNaN(pieces)) {
+                        const total = price * pieces;
+                        totalSaleInput.value = total.toFixed(2); // Actualizar el campo de total de venta
+                    }
+                }
+            });
+        </script>
+    </div>
 </div>
 {% endblock %}
