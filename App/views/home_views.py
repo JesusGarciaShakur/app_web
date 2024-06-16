@@ -20,7 +20,8 @@ def signin():
                 'id_user': user.id_user,
                 'user_email': user.user_email,
                 'user_username': user.user_username,
-                'type': user.id_type
+                'type': user.id_type,
+                'user_direction': user.user_direction
             }
             print(f"User authenticated: {user.user_username} with type: {user.id_type}")
             if user.id_type == 1:

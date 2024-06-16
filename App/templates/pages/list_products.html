@@ -3,6 +3,64 @@
 {% block title %} Lista de Productos {% endblock title %}
 
 {% block content %}
+<div class="form-group mb-0">
+    <form method="post" action="{{ url_for('visit.product_list') }}" enctype="multipart/form-data" class="mt-3"
+        style="max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        {{ form.csrf_token }}
+        <!-- Campo para seleccionar el producto -->
+        {{ form.id_product.label }}
+        <select class="form-control custom-select" name="{{ form.id_product.name }}">
+            <option value="">Selecciona tu producto...</option>
+            {% for id_product, product_name in form.id_product.choices %}
+                <option value="{{ id_product }}">{{ product_name }}</option>
+            {% endfor %}
+        </select>
+        {% if form.id_product.errors %}
+            {% for error in form.id_product.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        <!-- Otros campos del formulario -->
+        {{ form.userName_sale.label }}
+        {{ form.userName_sale(class="form-control") }}
+        {% if form.userName_sale.errors %}
+            {% for error in form.userName_sale.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        {{ form.direction.label }}
+        {{ form.direction(class="form-control") }}
+        {% if form.direction.errors %}
+            {% for error in form.direction.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+        {{ form.sale_date.label }}
+        {{ form.sale_date(class="form-control") }}
+        {% if form.sale_date.errors %}
+            {% for error in form.sale_date.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
 
+        {{ form.total_sale.label }}
+        {{ form.total_sale(class="form-control") }}
+        {% if form.total_sale.errors %}
+            {% for error in form.total_sale.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {{ form.pieces.label }}
+        {{ form.pieces(class="form-control") }}
+        {% if form.pieces.errors %}
+            {% for error in form.pieces.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Botón de submit -->
+        <button type="submit" class="btn btn-primary mt-3">Guardar Venta</button>
+    </form>
+</div>
 {% endblock %}
-    

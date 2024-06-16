@@ -5,9 +5,11 @@ from utils.file_handler import save_image
 from models.comments import Comment
 from models.opinions import Opinion
 from models.products import Product
+from models.sales import Sale
 from models.users import Type, User
 from forms.comment_forms import CommentForm
 from forms.opinion_forms import OpinionForm
+from forms.sales_forms import RegisterSaleForm
 
 
 visit_views = Blueprint('visit', __name__)
@@ -41,6 +43,33 @@ def product():
         opinion.save()
         return redirect(url_for('visit.product'))
     return render_template('pages/product.html', form=form, opinions=opinions, products=products)
+
+@visit_views.route('/product_list', methods=['GET', 'POST'])
+def product_list():
+    form = RegisterSaleForm()
+    products = Product.get_all()
+    form.id_product.choices = [(product.id_product, product.product_name) for product in products]
+    if 'user' in session:
+        user = session['user']
+        form.userName_sale.data = user.get('user_username')
+        form.direction.data = user.get('user_direction')
+        form.sale_date.data = datetime.date.today()
+    if form.validate_on_submit():
+        userName_sale = form.userName_sale.data
+        id_product = form.id_product.data
+        sale_date = form.sale_date.data
+        total_sale = form.total_sale.data
+        direction = form.direction.data
+        pieces = form.pieces.data
+        sale = Sale(userName_sale=userName_sale,
+                        id_product=id_product,
+                        sale_date=sale_date,
+                        total_sale=total_sale,
+                        direction=direction,
+                        pieces=pieces)
+        sale.save()
+        return redirect(url_for('visit.product_list'))
+    return render_template('pages/list_products.html', form=form, products=products)
 
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
