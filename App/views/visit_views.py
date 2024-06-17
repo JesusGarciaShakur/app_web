@@ -1,5 +1,5 @@
 import datetime
-from flask import Blueprint, abort, render_template, redirect, url_for, flash, session
+from flask import Blueprint, abort, render_template, redirect, request, url_for, flash, session
 from forms.user_forms import UpdateUserVisitForm, UpdateProfileForm
 from utils.file_handler import save_image
 from models.comments import Comment
@@ -48,25 +48,25 @@ def product():
 def product_list():
     form = RegisterSaleForm()
     products = Product.get_all()
-    form.id_product.choices = [(product.id_product, product.product_name) for product in products]
-    product_prices = {product.id_product: product.product_price for product in products}  # Crear un diccionario con los precios
+    product_prices = {product.id_product: product.product_price for product in products}
 
     if 'user' in session:
         user = session['user']
         form.userName_sale.data = user.get('user_username')
-        form.direction.data = user.get('user_direction')
         form.sale_date.data = datetime.date.today()
+        form.direction.data = user.get('user_direction')
 
     if form.validate_on_submit():
         userName_sale = form.userName_sale.data
-        id_product = form.id_product.data
+        id_product = request.form.get('id_product')  # Obtener el ID del producto del formulario
+        product_name = request.form.get('product_name')
         sale_date = form.sale_date.data
-        total_sale = form.total_sale.data
+        total_sale = form.total_sale.data  # Puedes calcularlo o actualizarlo según sea necesario
         direction = form.direction.data
         pieces = form.pieces.data
         sale = Sale(
             userName_sale=userName_sale,
-            id_product=id_product,
+            product_name=product_name,
             sale_date=sale_date,
             total_sale=total_sale,
             direction=direction,
@@ -76,6 +76,9 @@ def product_list():
         return redirect(url_for('visit.product_list'))
 
     return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products)
+
+
+
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = CommentForm()
