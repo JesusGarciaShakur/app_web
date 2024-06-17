@@ -3,44 +3,35 @@
 {% block title %} Lista de Productos {% endblock title %}
 
 {% block content %}
-
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12">
-            <div id="firebaseui-auth-container" class="w-100">
-                <h2 class="text-center mb-10">Lista de productos</h2>
-                <div class="row no-gutters justify-content-center">
-                    {% for product in products %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                        <div class="card h-100">
-                            <img src="{{ url_for('static', filename='images/products/' + product.product_image) }}"
-                                class="card-img-top" alt="Imagen del producto">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.product_name }}</h5>
-                                <hr style="border-top: 1px solid #000; opacity: 0.2;">
-                                <h6 class="card-text"><strong>Precio: </strong>{{ product.product_price }}</h6>
-                                <button type="button" class="btn btn-primary mt-3" data-toggle="modal"
-                                    data-target="#buyModal" data-product-id="{{ product.id }}"
-                                    data-product-name="{{ product.product_name }}"
-                                    data-product-price="{{ product.product_price }}"
-                                    data-product-description="{{ product.product_description }}">
-                                    Ver características
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+    <h2 class="text-center mb-4">Lista de productos</h2>
+    <div class="row justify-content-center" id="product-list">
+        {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 text-center">
+                <img src="{{ url_for('static', filename='images/products/' + product.product_image) }}"
+                    class="card-img-top" alt="Imagen del producto">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                    <h6 class="card-text"><strong>Precio: </strong>{{ product.product_price }}</h6>
+                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#buyModal"
+                        data-product-id="{{ product.id }}" data-product-name="{{ product.product_name }}"
+                        data-product-price="{{ product.product_price }}"
+                        data-product-description="{{ product.product_description }}">
+                        Ver características
+                    </button>
                 </div>
             </div>
-            <hr style="border-top: 1px solid #000; opacity: 0.2;">
-            <br>
         </div>
+        {% endfor %}
     </div>
-</div>
 
+    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+</div>
 <!-- Modal -->
 <div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="buyModalLabel">Comprar Producto</h5>
@@ -49,113 +40,91 @@
                 </button>
             </div>
             <div class="modal-body">
+                <h5 id="product-name-modal" class="modal-title"></h5>
                 <p id="product-description" class="card-text"></p>
                 <form method="post" action="{{ url_for('visit.product_list') }}" enctype="multipart/form-data">
                     {{ form.csrf_token }}
-                    <!-- Campo oculto para guardar el ID del producto seleccionado -->
+                
+                    <!-- Hidden fields to store selected product data -->
                     <input type="hidden" id="id_product_hidden" name="id_product">
-                    
-                    <!-- Campo oculto para guardar el nombre del producto seleccionado -->
                     <input type="hidden" id="product_name_hidden" name="product_name">
-
-                    <!-- Campo para mostrar el precio del producto seleccionado -->
+                
+                    <!-- Product price display -->
                     <div id="product_price_container">
                         Precio del producto: $<span id="product_price">-</span>
                     </div>
-
-                    <!-- Otros campos del formulario -->
-                    {{ form.userName_sale.label }}
-                    {{ form.userName_sale(class="form-control") }}
-                    {% if form.userName_sale.errors %}
-                    {% for error in form.userName_sale.errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                    {% endif %}
-
-                    {{ form.direction.label }}
-                    {{ form.direction(class="form-control") }}
-                    {% if form.direction.errors %}
-                    {% for error in form.direction.errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                    {% endif %}
-
-                    {{ form.sale_date.label }}
-                    {{ form.sale_date(class="form-control") }}
-                    {% if form.sale_date.errors %}
-                    {% for error in form.sale_date.errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                    {% endif %}
-
-                    {{ form.total_sale.label }}
-                    {{ form.total_sale(class="form-control", id="total_sale") }}
-                    {% if form.total_sale.errors %}
-                    {% for error in form.total_sale.errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                    {% endif %}
-
-                    {{ form.pieces.label }}
-                    {{ form.pieces(class="form-control", id="pieces") }}
-                    {% if form.pieces.errors %}
-                    {% for error in form.pieces.errors %}
-                    <p>{{ error }}</p>
-                    {% endfor %}
-                    {% endif %}
-
-                    <!-- Botón de submit -->
-                    <button type="submit" class="btn btn-primary mt-3">Guardar Venta</button>
+                
+                    <!-- Dirección por defecto -->
+                    <div class="form-group" id="default_address_group">
+                        <label>Dirección por defecto:</label>
+                        <p>{{ user.user_direction }}</p>
+                    </div>
+                
+                    <!-- Checkbox para usar dirección nueva -->
+                    <div class="form-check mb-3">
+                        {{ form.use_new_address(class="form-check-input", id="use_new_address") }}
+                        <label class="form-check-label" for="use_new_address">
+                            Usar nueva dirección
+                        </label>
+                    </div>
+                
+                    <!-- Sección de dirección nueva -->
+                    <div id="new_address_group" style="display: none;">
+                        <div class="form-group">
+                            {{ form.direction.label }}
+                            {{ form.direction(class="form-control", id="direction") }}
+                            {% if form.direction.errors %}
+                                {% for error in form.direction.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        {{ form.pieces.label }}
+                        {{ form.pieces(class="form-control", type="number", id="pieces", min="1", value="1") }}
+                        {% if form.pieces.errors %}
+                            {% for error in form.pieces.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group">
+                        {{ form.total_sale.label }}
+                        {{ form.total_sale(class="form-control", id="total_sale") }}
+                        {% if form.total_sale.errors %}
+                            {% for error in form.total_sale.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                
+                    <!-- Buttons -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary mt-3">Guardar Venta</button>
+                        <button type="button" class="btn btn-danger mt-3 ml-2" data-dismiss="modal">Cancelar</button>
+                    </div>
                 </form>
+                
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Script para manejar el cambio de producto y cálculo del total
     document.addEventListener('DOMContentLoaded', function () {
-        const buyModal = document.getElementById('buyModal');
-        const idProductHidden = document.getElementById('id_product_hidden');
-        const productPrice = document.getElementById('product_price');
-        const totalSaleInput = document.getElementById('total_sale');
-        const piecesInput = document.getElementById('pieces');
-        const productDescription = document.getElementById('product-description');
+        const useNewAddressCheckbox = document.getElementById('use_new_address');
+        const newAddressGroup = document.getElementById('new_address_group');
 
-        // Manejar la apertura del modal
-        $('#buyModal').on('show.bs.modal', function (event) {
-            const button = $(event.relatedTarget); // Botón que activó el modal
-            const productId = button.data('product-id');
-            const productName = button.data('product-name');
-            const productPriceValue = button.data('product-price');
-            const productDescriptionValue = button.data('product-description');
-        
-            // Actualizar el modal con la información del producto seleccionado
-            const modal = $(this);
-            modal.find('.modal-title').text('Comprar ' + productName);
-            productDescription.textContent = productDescriptionValue;
-            idProductHidden.value = productId;
-            productPrice.textContent = productPriceValue;
-            calculateTotal();
-        
-            // Actualizar el campo oculto del nombre del producto
-            document.getElementById('product_name_hidden').value = productName;
-        });
-
-        piecesInput.addEventListener('input', function () {
-            calculateTotal();
-        });
-
-        function calculateTotal() {
-            const price = parseFloat(productPrice.textContent);
-            const pieces = parseFloat(piecesInput.value);
-
-            if (!isNaN(price) && !isNaN(pieces)) {
-                const total = price * pieces;
-                totalSaleInput.value = total.toFixed(2); // Actualizar el campo de total de venta
+        useNewAddressCheckbox.addEventListener('change', function () {
+            if (useNewAddressCheckbox.checked) {
+                newAddressGroup.style.display = 'block';
+            } else {
+                newAddressGroup.style.display = 'none';
             }
-        }
+        });
     });
 </script>
-
 {% endblock %}

@@ -47,6 +47,7 @@ def product():
 @visit_views.route('/product_list', methods=['GET', 'POST'])
 def product_list():
     form = RegisterSaleForm()
+    user = User.get_all()  # Esto probablemente debería ser User.get(id_usuario)
     products = Product.get_all()
     product_prices = {product.id_product: product.product_price for product in products}
 
@@ -54,16 +55,21 @@ def product_list():
         user = session['user']
         form.userName_sale.data = user.get('user_username')
         form.sale_date.data = datetime.date.today()
-        form.direction.data = user.get('user_direction')
 
     if form.validate_on_submit():
         userName_sale = form.userName_sale.data
-        id_product = request.form.get('id_product')  # Obtener el ID del producto del formulario
+        id_product = request.form.get('id_product')
         product_name = request.form.get('product_name')
         sale_date = form.sale_date.data
-        total_sale = form.total_sale.data  # Puedes calcularlo o actualizarlo según sea necesario
-        direction = form.direction.data
+        total_sale = form.total_sale.data
         pieces = form.pieces.data
+
+        # Obtener dirección según la selección del usuario
+        if form.use_new_address.data:
+            direction = form.direction.data  # Usar la nueva dirección ingresada
+        else:
+            direction = user.get('user_direction')  # Usar la dirección por defecto del usuario
+
         sale = Sale(
             userName_sale=userName_sale,
             product_name=product_name,
@@ -75,7 +81,7 @@ def product_list():
         sale.save()
         return redirect(url_for('visit.product_list'))
 
-    return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products)
+    return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products, user=user)
 
 
 
