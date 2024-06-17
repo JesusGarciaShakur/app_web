@@ -4,6 +4,7 @@ from models.users import User
 from models.type import Type
 from models.comments import Comment
 from models.products import Product
+from models.sales import Sale
 from forms.user_forms import RegisterForm, UpdateUserForm
 from forms.products_forms import RegisterProduct, UpdateProduct
 from utils.file_handler import save_image
@@ -21,7 +22,8 @@ def admin_users():
 @admin_views.route('/admin/sales')
 def admin_sales():
     if session.get('user') and session.get('user')['type'] == 1:
-        return render_template('admin/sales_admin.html')
+        sales = Sale.get_all()
+        return render_template('admin/sales_admin.html', sales=sales)
     else:
         abort(403)
 

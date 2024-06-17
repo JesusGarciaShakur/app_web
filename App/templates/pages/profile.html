@@ -3,26 +3,27 @@
 {% block title %}Registrarse{% endblock title %}
 
 {% block content %}
-<br><br><br><br>
+<br><br>
 <div class="container justify-content-center align-items-center"
     style="max-width: 400px; border: 1px solid #000; border-radius: 10px; padding: 15px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <h1 class="text-center mb-4">Información de perfil</h1>
-            <div class="mb-4 text-center">
+            <div class="text-center mb-4">
                 {% if user %}
                 <div class="profile-info">
-                    <div class="mb-3">
-                        {% if user.user_image %}
-                        <img src="{{ url_for('static', filename='images/profiles/' + user.user_image) }}" 
-                        alt="Imagen del perfil"
-                        width="100px">
-                        {% else %}
-                        <img src="{{ url_for('static', filename='images/profiles/icon-profile.png') }}"
-                            alt="Imagen de Perfil de Usuario"
-                            class="img-fluid rounded-circle"
-                            width="200">
-                        {% endif %}
+                    <div class="mb-3 d-flex justify-content-center">
+                        <div class="profile-image-wrapper">
+                            {% if user.user_image %}
+                            <img src="{{ url_for('static', filename='images/profiles/' + user.user_image) }}" 
+                            alt="Imagen del perfil"
+                            class="img-fluid rounded-circle profile-image">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='images/profiles/icon-profile.png') }}"
+                                alt="Imagen de Perfil de Usuario"
+                                class="img-fluid rounded-circle profile-image">
+                            {% endif %}
+                        </div>
                     </div>
                     <h2 class="mb-3">Hola, {{ user.user_username }}</h2>
                     <div class="profile-details text-left">
@@ -34,15 +35,15 @@
                         <p><strong>Dirección:</strong> {{ user.user_direction }}</p>
                         <p><strong>Número de teléfono:</strong> {{ user.user_phoneNumber }}</p>
                     </div>
-                    <div class="text-center mt-3">
+                    <div class="d-flex justify-content-around mt-4">
                         <a class="btn btn-primary" href="{{ url_for('visit.update_info', id_user=user.id_user) }}">
-                            <i class="fa fa-edit"></i> Actualizar perfil
+                            <i class="fa fa-edit"></i>
                         </a>
-                        <a class="btn btn-primary" href="{{ url_for('visit.update_profile', id_user=user.id_user) }}">
-                            <i class="fa fa-edit"></i> Cambiar contraseña
+                        <a class="btn btn-secondary" href="{{ url_for('visit.update_profile', id_user=user.id_user) }}">
+                            <i class="fa fa-lock"></i> Cambiar contraseña
                         </a>
-                        <a class="btn btn-primary" href="{{ url_for('home.logout') }}">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        <a class="btn btn-danger" href="{{ url_for('home.logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </div>
                 </div>
@@ -53,4 +54,18 @@
         </div>
     </div>
 </div>
+
+<style>
+    .profile-image-wrapper {
+        border: 2px solid #000;
+        border-radius: 50%;
+        padding: 5px;
+        width: fit-content;
+    }
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+    }
+</style>
 {% endblock %}

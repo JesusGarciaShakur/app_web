@@ -86,7 +86,7 @@ class Sale:
                                 sale_date=sale["sale_date"],
                                 total_sale=sale["total_sale"],
                                 direction=sale["direction"],
-                                pieces=sales["pieces"]))
+                                pieces=sale["pieces"]))
                 sales.append(sale)
         return sales
     

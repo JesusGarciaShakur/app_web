@@ -17,22 +17,23 @@ Lista de ventas
                 <table class="table table-striped table-bordered rounded table-hover" style="background-color: white;" id="Table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>ID de Usuario</th>
-                            <th>Nombre de Usuario</th>
-                            <th>ID de Producto</th>
-                            <th>Nombre de Producto</th>
-                            <th>Total</th>
                             <th>Fecha de venta</th>
+                            <th>Nombre de Usuario</th>
+                            <th>Nombre de Producto</th>
                             <th>Dirección de entrega</th>
+                            <th>Piezas solicitadas</th>
+                            <th>Total de venta</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for product in products %}
+                        {% for sale in sales %}
                         <tr>
-                            <td>{{ product.name_product }}</td>
-                            <td>{{ product.size }}</td>
-                            <td>{{ product.price }}</td>
-                            <td>{{ product.material }}</td>
+                            <td>{{ sale.sale_date }}</td>
+                            <td>{{ sale.userName_sale }}</td>
+                            <td>{{ sale.product_name }}</td>
+                            <td>{{ sale.direction }}</td>
+                            <td>{{ sale.pieces }}</td>
+                            <td>$ {{ sale.total_sale }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
