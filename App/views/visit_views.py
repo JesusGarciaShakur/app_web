@@ -24,30 +24,37 @@ def product():
     products = Product.get_all()
     form.id_product.choices = [(product.id_product, product.product_name) for product in products]
     opinions = Opinion.get_all()
-    product = Product.get_all()
+    
     if 'user' in session:
         user = session['user']
         form.username_opinion.data = user.get('user_username')
         form.date_opinion.data = datetime.date.today()
-    if form.validate_on_submit():
-        username_opinion = form.username_opinion.data
-        id_product = form.id_product.data
-        rating_product = form.rating_product.data
-        comment_opinion = form.comment_opinion.data
-        date_opinion = form.date_opinion.data
-        opinion = Opinion(username_opinion=username_opinion,
-                        id_product=id_product,
-                        rating_product=rating_product,
-                        comment_opinion=comment_opinion,
-                        date_opinion=date_opinion)
-        opinion.save()
-        return redirect(url_for('visit.product'))
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            username_opinion = form.username_opinion.data
+            id_product = form.id_product.data
+            rating_product = form.rating_product.data
+            comment_opinion = form.comment_opinion.data
+            date_opinion = form.date_opinion.data
+            opinion = Opinion(username_opinion=username_opinion,
+                            id_product=id_product,
+                            rating_product=rating_product,
+                            comment_opinion=comment_opinion,
+                            date_opinion=date_opinion)
+            opinion.save()
+            flash('Tu calificación ha sido registrada correctamente.', 'success')
+            return redirect(url_for('visit.product'))
+        else:
+            flash('Error al registrar la calificación. Por favor, revisa los datos ingresados.', 'error')
+    
+    # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
     return render_template('pages/product.html', form=form, opinions=opinions, products=products)
 
 @visit_views.route('/product_list', methods=['GET', 'POST'])
 def product_list():
     form = RegisterSaleForm()
-    user = User.get_all()  # Esto probablemente debería ser User.get(id_usuario)
+    user = User.get_all()
     products = Product.get_all()
     product_prices = {product.id_product: product.product_price for product in products}
 
@@ -55,56 +62,62 @@ def product_list():
         user = session['user']
         form.userName_sale.data = user.get('user_username')
         form.sale_date.data = datetime.date.today()
+    if request.method == 'POST':
+        # Obtener la dirección del usuario si se selecciona 'use_new_address'
+        if form.validate_on_submit():
+            userName_sale = form.userName_sale.data
+            id_product = request.form.get('id_product')
+            product_name = request.form.get('product_name')
+            sale_date = form.sale_date.data
+            total_sale = form.total_sale.data
+            pieces = form.pieces.data
 
-    if form.validate_on_submit():
-        userName_sale = form.userName_sale.data
-        id_product = request.form.get('id_product')
-        product_name = request.form.get('product_name')
-        sale_date = form.sale_date.data
-        total_sale = form.total_sale.data
-        pieces = form.pieces.data
+            # Obtener dirección según la selección del usuario
+            if form.use_new_address.data:
+                direction = form.direction.data  # Usar la nueva dirección ingresada
+            else:
+                direction = user.get('user_direction')  # Usar la dirección por defecto del usuario
 
-        # Obtener dirección según la selección del usuario
-        if form.use_new_address.data:
-            direction = form.direction.data  # Usar la nueva dirección ingresada
+            sale = Sale(
+                userName_sale=userName_sale,
+                product_name=product_name,
+                sale_date=sale_date,
+                total_sale=total_sale,
+                direction=direction,
+                pieces=pieces
+            )
+            sale.save()
+            flash('Solicitud registrada correctamente, en breve nos pondremos en contacto con usted.', 'success')
+            return redirect(url_for('visit.product_list'))
         else:
-            direction = user.get('user_direction')  # Usar la dirección por defecto del usuario
-
-        sale = Sale(
-            userName_sale=userName_sale,
-            product_name=product_name,
-            sale_date=sale_date,
-            total_sale=total_sale,
-            direction=direction,
-            pieces=pieces
-        )
-        sale.save()
-        return redirect(url_for('visit.product_list'))
-
+            flash('Error al registrar la venta. Por favor, revise los datos ingresados.', 'error')
     return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products, user=user)
-
-
 
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = CommentForm()
+    
     if 'user' in session:
         user = session['user']
         form.email_comment.data = user.get('user_email')
         form.date_comment.data = datetime.date.today()
         form.nameUser_comment.data = user.get('user_username')
-        
-    if form.validate_on_submit():
-        content_comment = form.content_comment.data
-        email_comment = form.email_comment.data
-        date_comment = form.date_comment.data
-        nameUser_comment = form.nameUser_comment.data
-        comentario = Comment(content_comment=content_comment,
-                            email_comment=email_comment, 
-                            date_comment=date_comment, 
-                            nameUser_comment=nameUser_comment)
-        comentario.save()
-        return redirect(url_for('visit.contact'))
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            content_comment = form.content_comment.data
+            email_comment = form.email_comment.data
+            date_comment = form.date_comment.data
+            nameUser_comment = form.nameUser_comment.data
+            comentario = Comment(content_comment=content_comment,
+                                email_comment=email_comment, 
+                                date_comment=date_comment, 
+                                nameUser_comment=nameUser_comment)
+            comentario.save()
+            flash('Comentario enviado correctamente.', 'success')
+            return redirect(url_for('visit.contact'))
+        else:
+            flash('Error al enviar el comentario. Por favor, revise los datos ingresados.', 'error')
     
     return render_template('pages/contact.html', form=form)
 

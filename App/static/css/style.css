@@ -168,3 +168,111 @@ details {
     margin-bottom: 0;
     margin-right: 10px;
 }
+
+/* Contacto */
+.text-center {
+    text-align: center;
+}
+
+.ask-question {
+    margin-right: 20px;
+}
+
+.ask-question a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.ask-question a:hover {
+    color: #0056b3;
+}
+
+#contact-form {
+    display: none;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+#contact-form.active {
+    display: block;
+}
+
+#contact-form form {
+    margin-top: 15px;
+}
+
+details {
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+summary {
+    list-style: none;
+    font-weight: bold;
+}
+
+summary::before {
+    content: '+';
+    padding-right: 5px;
+}
+
+details[open] summary::before {
+    content: '-';
+}
+
+.faq-section {
+    max-width: 800px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.faq-section h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.faq-section .acordeon-content {
+    display: none;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-top: 10px;
+}
+
+.faq-section .acordeon-content p {
+    margin-bottom: 0;
+}
+
+.acordeon {
+    margin-bottom: 10px;
+}
+
+.acordeon label {
+    display: block;
+    padding: 10px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.acordeon label:hover {
+    background: #0056b3;
+}
+
+.acordeon input[type="checkbox"] {
+    display: none;
+}
+
+.acordeon input[type="checkbox"]:checked~.acordeon-content {
+    display: block;
+}

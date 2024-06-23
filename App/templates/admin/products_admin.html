@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for product in products %}
+                        {% for product in products | sort(attribute='id_product', reverse=true) %}
                         <tr>
                                 <td><img src="{{ url_for('static', filename='images/products/' + product.product_image) }}" 
                                     alt="Imagen del producto"

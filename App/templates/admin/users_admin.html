@@ -34,7 +34,7 @@ Usuarios
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in users %}
+                        {% for user in users| sort(attribute='id_user', reverse=true) %}
                         <tr>
                             <td>{{ user.id_type }}</td>
                             <td>{{ user.user_username }}</td>

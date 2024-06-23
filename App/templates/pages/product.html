@@ -10,6 +10,15 @@
 
 <br>
 <br>
+<div class="row justify-content-center text-center">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
 <div class="container">
   <div class="row">
     <div class="col-md-6 mb-4">
@@ -144,6 +153,7 @@
                     </select>
                     {% if form.id_product.errors %}
                     {% for error in form.id_product.errors %}
+                    <div class="text-danger">{{ error }}</div>
                     <p>{{ error }}</p>
                     {% endfor %}
                     {% endif %}
@@ -186,7 +196,7 @@
   <h3 class="text-center mt-5">Opiniones de otros usuarios</h3>
   <div class="list-group">
     {% if opinions %}
-    {% for opinion in opinions | sort(attribute='date_opinion', reverse=true) %}
+    {% for opinion in opinions | sort(attribute='id_opinion', reverse=true) %}
     <div class="list-group-item">
       <small>
         Calificación:

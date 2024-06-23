@@ -2,118 +2,16 @@
 {% block title %} Contáctenos {% endblock title %}
 {% block content %}
 
-<head>
-    <style>
-        .text-center {
-            text-align: center;
-        }
-
-        .ask-question {
-            margin-right: 20px;
-        }
-
-        .ask-question a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
-
-        .ask-question a:hover {
-            color: #0056b3;
-        }
-
-        #contact-form {
-            display: none;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        #contact-form.active {
-            display: block;
-        }
-
-        #contact-form form {
-            margin-top: 15px;
-        }
-
-        details {
-            background: #f2f2f2;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        summary {
-            list-style: none;
-            font-weight: bold;
-        }
-
-        summary::before {
-            content: '+';
-            padding-right: 5px;
-        }
-
-        details[open] summary::before {
-            content: '-';
-        }
-
-        .faq-section {
-            max-width: 800px;
-            margin: auto;
-            margin-top: 50px;
-        }
-
-        .faq-section h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .faq-section .acordeon-content {
-            display: none;
-            padding: 20px;
-            border-radius: 5px;
-            background-color: #fff;
-            margin-top: 10px;
-        }
-
-        .faq-section .acordeon-content p {
-            margin-bottom: 0;
-        }
-
-        .acordeon {
-            margin-bottom: 10px;
-        }
-
-        .acordeon label {
-            display: block;
-            padding: 10px;
-            background: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .acordeon label:hover {
-            background: #0056b3;
-        }
-
-        .acordeon input[type="checkbox"] {
-            display: none;
-        }
-
-        .acordeon input[type="checkbox"]:checked ~ .acordeon-content {
-            display: block;
-        }
-    </style>
-</head>
-
 <body>
+    <div class="row justify-content-center text-center">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
     <div class="faq-section">
         <h1>Preguntas Frecuentes</h1>
         <div class="acordeon">
@@ -129,9 +27,9 @@
             <label for="acordeon2">▼ ¿Cuánto tiempo dura la batería del dispositivo?</label>
             <div class="acordeon-content">
                 <p>El dispositivo cuenta con un panel solar, lo cual lo hace autónomo todas los días
-                    al recibir los rayos del sol, el dispositivo se volverá a cargar, por lo que, no tendrás 
+                    al recibir los rayos del sol, el dispositivo se volverá a cargar, por lo que, no tendrás
                     que preocuparte por la batería restante.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <div class="acordeon">
@@ -141,28 +39,28 @@
                 <p>Las alturas proporcionadas por el sensor ultrasónico ya vienen predeterminadas base
                     a estándares, desde la aplicación solo necesitarás seleccionar el tipo de dispositivo con el
                     que cuentas.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <div class="acordeon">
             <input type="checkbox" id="acordeon4">
             <label for="acordeon4">▼ ¿Qué pasa si el sensor no está midiendo correctamente?</label>
             <div class="acordeon-content">
-                <p>En caso de no recibir lecturas correctas, se deberá seleccionar nuevamente el dispositivo, 
-                    en caso de que esto no resuelva el problema, comunícate con nosotros por medio de 
-                    nuestras redes sociales o completando el formulario para dejarnos tu comentario 
+                <p>En caso de no recibir lecturas correctas, se deberá seleccionar nuevamente el dispositivo,
+                    en caso de que esto no resuelva el problema, comunícate con nosotros por medio de
+                    nuestras redes sociales o completando el formulario para dejarnos tu comentario
                     y de esa manera ponernos en contacto contigo.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <div class="acordeon">
             <input type="checkbox" id="acordeon5">
             <label for="acordeon5">▼ ¿Hay alguna manera de recibir alertas cuando el nivel de agua esté bajo?</label>
             <div class="acordeon-content">
-                <p>El dispositivo detectará de manera automática cuando el dispositivo de agua este casi vacío y 
+                <p>El dispositivo detectará de manera automática cuando el dispositivo de agua este casi vacío y
                     de manera automática encenderá la bomba para el llenado, de la misma manera al estar lleno se
                     apagará de manera automática.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <div class="acordeon">
@@ -177,7 +75,8 @@
         </div>
         <div class="acordeon">
             <input type="checkbox" id="acordeon7">
-            <label for="acordeon7">▼ ¿Cómo puedo acceder a los datos de capacidad de agua desde la aplicación móvil?</label>
+            <label for="acordeon7">▼ ¿Cómo puedo acceder a los datos de capacidad de agua desde la aplicación
+                móvil?</label>
             <div class="acordeon-content">
                 <p>La aplicación móvil te mostrará el porcentaje de agua que tienes disponible en tu dispositivo.</p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
@@ -195,16 +94,18 @@
             <input type="checkbox" id="acordeon9">
             <label for="acordeon9">▼ ¿Es posible compartir el acceso a la aplicación con otros usuarios?</label>
             <div class="acordeon-content">
-                <p>Si es posible, todos tus datos están guardados en una base de datos, gracias a eso 
+                <p>Si es posible, todos tus datos están guardados en una base de datos, gracias a eso
                     podrás iniciar sesión en diferentes dispositivos, utilizando tu usuario y contraseña.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <div class="acordeon">
             <input type="checkbox" id="acordeon10">
-            <label for="acordeon10">▼ ¿Hay alguna forma de integrar este dispositivo con otros sistemas de automatización del hogar?</label>
+            <label for="acordeon10">▼ ¿Hay alguna forma de integrar este dispositivo con otros sistemas de
+                automatización del hogar?</label>
             <div class="acordeon-content">
-                <p>Al ser un sistema independiente, por el momento no se puede integrar con otros dispositivos de domótica.</p>
+                <p>Al ser un sistema independiente, por el momento no se puede integrar con otros dispositivos de
+                    domótica.</p>
                 <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
@@ -212,38 +113,39 @@
             <input type="checkbox" id="acordeon11">
             <label for="acordeon11">▼ ¿Qué pasa si quiero desinstalar el dispositivo o moverlo a otro tinaco?</label>
             <div class="acordeon-content">
-                <p>Si deseas cambiar el dispositivo a otro tinaco, solo deberás retirarlo y repetir el mismo proceso de instalación
+                <p>Si deseas cambiar el dispositivo a otro tinaco, solo deberás retirarlo y repetir el mismo proceso de
+                    instalación
                     que se haya realizado con anterioridad.</p>
-                    <hr style="border-top: 1px solid #000; opacity: 0.2;">
+                <hr style="border-top: 1px solid #000; opacity: 0.2;">
             </div>
         </div>
         <!-- Agrega más preguntas frecuentes aquí -->
     </div>
     <br>
-    <hr style="border-top: 0.1px solid #000; opacity: 0.2;">
-    <br>
     <div class="row justify-content-center">
-        <div class="ask-question text-center"> <!-- Añade la clase text-center aquí -->
+        <div class="ask-question text-center">
             {% if 'user' not in session %}
-            <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y háznosla saber</p>
+            <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y
+                háznosla saber</p>
             {% else %}
             <p>Tienes alguna otra pregunta, háznosla saber</p>
             <div>
-                <form method="post" action="{{ url_for('visit.contact') }}" enctype="multipart/form-data" class="mt-3" style="max-width: 800px; margin: auto;">
+                <form method="post" action="{{ url_for('visit.contact') }}" enctype="multipart/form-data" class="mt-3"
+                    style="max-width: 800px; margin: auto;">
                     {{ form.hidden_tag() }}
                     <div class="form-group">
                         <label for="content_comment">Pregunta o comentario:</label>
                         {{ form.content_comment(class="form-control", required="required", placeholder="Ingrese su pregunta o comentario") }}
                         {% if form.content_comment.errors %}
-                            {% for error in form.content_comment.errors %}
-                                <div class="text-danger">{{ error }}</div>
-                            {% endfor %}
+                        {% for error in form.content_comment.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
                         {% endif %}
                     </div>
                     <div class="form-group text-center">
                         {{ form.submit(class="btn btn-primary") }}
                     </div>
-                </form>        
+                </form>
             </div>
             {% endif %}
         </div>

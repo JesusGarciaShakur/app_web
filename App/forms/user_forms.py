@@ -48,7 +48,7 @@ class UpdateUserForm(FlaskForm):
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
     user_direction = StringField('Dirección', validators = [DataRequired(), Length(min=4, max=100)])
     user_phoneNumber = StringField('Teléfono', validators = [DataRequired(),Length(min=10, max=10)])
-    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg'], 'Solo imágenes con extension png, jpg!')])
+    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg', 'jpeg'], 'Solo imágenes con extension png, jpg!')])
     submit = SubmitField('Actualizar')
 
 class UpdateUserVisitForm(FlaskForm):
@@ -64,5 +64,5 @@ class UpdateProfileForm(FlaskForm):
     user_email = EmailField('Correo Electrónico', validators = [DataRequired(), Email()])
     user_password = PasswordField('Contraseña', validators = [DataRequired(), Length(min=8)])
     user_password_confirm = PasswordField('Confirmar contraseña', validators=[DataRequired(), EqualTo('user_password')])
-    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg'], 'Solo imágenes con extension png, jpg!')])
+    user_image = FileField('Imagen de Usuario', validators=[ FileAllowed(['png', 'jpg', 'jpeg'], 'Solo imágenes con extension png, jpg!')])
     submit = SubmitField('Actualizar Perfil')

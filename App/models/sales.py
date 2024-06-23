@@ -79,14 +79,14 @@ class Sale:
             sql = "SELECT * FROM sales"
             cursor.execute(sql)
             result = cursor.fetchall()
-            for sale in result:
-                sales.append(Sale(id_sale=sale["id_sale"],
-                                userName_sale=sale["userName_sale"],
-                                product_name=sale["product_name"],
-                                sale_date=sale["sale_date"],
-                                total_sale=sale["total_sale"],
-                                direction=sale["direction"],
-                                pieces=sale["pieces"]))
+            for row in result:
+                sale= Sale(id_sale=row["id_sale"],
+                                userName_sale=row["userName_sale"],
+                                product_name=row["product_name"],
+                                sale_date=row["sale_date"],
+                                total_sale=row["total_sale"],
+                                direction=row["direction"],
+                                pieces=row["pieces"])
                 sales.append(sale)
         return sales
     
