@@ -19,6 +19,9 @@ def signin():
             session['user'] = {
                 'id_user': user.id_user,
                 'user_email': user.user_email,
+                'user_name': user.user_name,
+                'user_lastname': user.user_lastname,
+                'user_phoneNumber': user.user_phoneNumber,
                 'user_username': user.user_username,
                 'type': user.id_type,
                 'user_direction': user.user_direction

@@ -1,4 +1,7 @@
 import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 from flask import Blueprint, abort, render_template, redirect, request, url_for, flash, session
 from forms.user_forms import UpdateUserVisitForm, UpdateProfileForm
 from utils.file_handler import save_image
@@ -51,6 +54,7 @@ def product():
     # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
     return render_template('pages/product.html', form=form, opinions=opinions, products=products)
 
+
 @visit_views.route('/product_list', methods=['GET', 'POST'])
 def product_list():
     form = RegisterSaleForm()
@@ -62,8 +66,8 @@ def product_list():
         user = session['user']
         form.userName_sale.data = user.get('user_username')
         form.sale_date.data = datetime.date.today()
+    
     if request.method == 'POST':
-        # Obtener la dirección del usuario si se selecciona 'use_new_address'
         if form.validate_on_submit():
             userName_sale = form.userName_sale.data
             id_product = request.form.get('id_product')
@@ -72,11 +76,10 @@ def product_list():
             total_sale = form.total_sale.data
             pieces = form.pieces.data
 
-            # Obtener dirección según la selección del usuario
             if form.use_new_address.data:
-                direction = form.direction.data  # Usar la nueva dirección ingresada
+                direction = form.direction.data
             else:
-                direction = user.get('user_direction')  # Usar la dirección por defecto del usuario
+                direction = user.get('user_direction')
 
             sale = Sale(
                 userName_sale=userName_sale,
@@ -87,12 +90,66 @@ def product_list():
                 pieces=pieces
             )
             sale.save()
+                        # Enviar correo electrónico con la información del usuario
+            user_info = {
+                'user_name': user.get('user_name'),
+                'user_lastname': user.get('user_lastname'),
+                'user_email': user.get('user_email'),
+                'user_phoneNumber': user.get('user_phoneNumber')
+            }
+
+            # Enviar correo electrónico
+            send_email(userName_sale, product_name, sale_date, total_sale, direction, pieces, user_info)
+
             flash('Solicitud registrada correctamente, en breve nos pondremos en contacto con usted.', 'success')
             return redirect(url_for('visit.product_list'))
         else:
             flash('Error al registrar la venta. Por favor, revise los datos ingresados.', 'error')
+    
     return render_template('pages/list_products.html', form=form, product_prices=product_prices, products=products, user=user)
 
+def send_email(userName_sale, product_name, sale_date, total_sale, direction, pieces, user_info):
+    try:
+        # Configuración del servidor SMTP
+        smtp_server = 'smtp.gmail.com'
+        smtp_port = 587
+        smtp_username = 'meztlicode@gmail.com'
+        smtp_password = 'bxpl scep qciv gaby'  # Usa la contraseña de aplicación generada
+
+        # Configuración del mensaje
+        msg = MIMEMultipart()
+        msg['From'] = smtp_username
+        msg['To'] = 'meztlicode@gmail.com'
+        msg['Subject'] = 'Nueva Solicitud de Instalación'
+
+        body = f'''
+        Nueva solicitud de instalación registrada:
+
+        Usuario: {userName_sale}
+        Producto: {product_name}
+        Fecha de venta: {sale_date}
+        Total de la venta: ${total_sale}
+        Dirección de instalación: {direction}
+        Piezas solicitadas: {pieces}
+        
+        Información del Usuario:
+
+        Nombre: {user_info['user_name']}
+        Apellidos: {user_info['user_lastname']}
+        Número de Teléfono: {user_info['user_phoneNumber']}
+        Correo Electrónico: {user_info['user_email']}
+        '''
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Conexión y envío del correo
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.send_message(msg)
+        server.quit()
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
+        
 @visit_views.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = CommentForm()
@@ -144,9 +201,13 @@ def update_info(id_user):
         user.user_lastname = form.user_lastname.data
         user.user_direction = form.user_direction.data
         user.user_phoneNumber = form.user_phoneNumber.data
+        f = form.user_image.data
+        if f:
+            user.user_image = save_image(f, 'images/profiles', user.user_username)
+        else:
+            user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
         user.update()
-        return redirect(url_for('visit.index'))
-        # Actualiza los atributos del usuario con los datos ingresados
+        return redirect(url_for('visit.profile'))
 
     form.user_name.data = user.user_name
     form.user_lastname.data = user.user_lastname
@@ -169,20 +230,9 @@ def update_profile(id_user):
         user.user_username = form.user_username.data
         user.user_email = form.user_email.data
         user.user_password = form.user_password.data
-        f = form.user_image.data
-        if f:
-            user.user_image = save_image(f, 'images/profiles', user.user_username)
-        else:
-            user.user_image = user.user_image  # Mantener valor existente si no hay imagen nueva
         user.update()
-        return redirect(url_for('visit.index'))
-    else:
-        # Imprimir errores de validación para depuración
-        print(form.errors)
-        for field, errors in form.errors.items():
-            for error in errors:
-                flash(f"Error en el campo {field}: {error}", 'danger')
-
+        return redirect(url_for('visit.profile'))
+        # Actualiza los atributos del usuario con los datos ingresados
     form.id_type.data = user.id_type
     form.user_username.data = user.user_username
     form.user_email.data = user.user_email

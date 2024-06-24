@@ -7,7 +7,6 @@ from views.user_views import user_views
 from views.home_views import home_views
 from views.error_views import error_views
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'My Secret Key'
 
