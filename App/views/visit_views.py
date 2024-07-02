@@ -2,7 +2,7 @@ import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-from flask import Blueprint, abort, render_template, redirect, request, url_for, flash, session
+from flask import Blueprint, abort, jsonify, render_template, redirect, request, url_for, flash, session
 from forms.user_forms import UpdateUserVisitForm, UpdateProfileForm
 from utils.file_handler import save_image
 from models.comments import Comment
@@ -14,6 +14,9 @@ from forms.comment_forms import CommentForm
 from forms.opinion_forms import OpinionForm
 from forms.sales_forms import RegisterSaleForm
 
+from models.db import get_connection
+
+mydb = get_connection()
 
 visit_views = Blueprint('visit', __name__)
 
@@ -244,3 +247,26 @@ def delete_profile(id_user):
     user = User.get(id_user)
     user.delete()
     return redirect(url_for('visit.index'))
+
+
+@visit_views.route('/get_comments')
+def get_comments():
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    offset = (page - 1) * per_page
+
+    with mydb.cursor(dictionary=True) as cursor:
+        cursor.execute("SELECT COUNT(*) FROM vista_opiniones")
+        total = cursor.fetchone()['COUNT(*)']
+        
+        cursor.execute("SELECT * FROM vista_opiniones ORDER BY `id de opinion` DESC LIMIT %s OFFSET %s", (per_page, offset))
+        result = cursor.fetchall()
+    
+    comments = [dict(id_opinion=row["id de opinion"],
+                    username_opinion=row["nombre de usuario"],
+                    id_product=row["nombre del producto"],  # Ensure this matches exactly with your column name
+                    rating_product=row["calificacion"],
+                    comment_opinion=row["comentario"],
+                    date_opinion=row["fecha"]) for row in result]
+    
+    return jsonify({'comments': comments, 'total': total, 'page': page, 'per_page': per_page})

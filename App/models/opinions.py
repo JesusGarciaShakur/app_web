@@ -69,12 +69,30 @@ class Opinion:
             return None
         
     @staticmethod
-    def get_all(page=1, per_page=5):
+    def get_all():
+        opinions = []
+        with mydb.cursor(dictionary=True) as cursor:
+            sql = "SELECT * FROM vista_opiniones"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                opinion = Opinion(
+                    id_opinion=row["id de opinion"],
+                    username_opinion=row["nombre de usuario"],
+                    id_product=row["nombre del producto"],
+                    rating_product=row["calificacion"],
+                    comment_opinion=row["comentario"],
+                    date_opinion=row["fecha"]
+                )
+                opinions.append(opinion)
+        return opinions
+
+    @staticmethod
+    def get_five(page=1, per_page=5):
         opinions = []
         with mydb.cursor(dictionary=True) as cursor:
             # Calcular el offset
             offset = (page - 1) * per_page
-            
             # Consulta SQL con LIMIT y OFFSET para la paginación
             sql = "SELECT * FROM vista_opiniones ORDER BY fecha DESC LIMIT %s OFFSET %s"
             cursor.execute(sql, (per_page, offset))
