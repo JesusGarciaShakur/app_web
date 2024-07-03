@@ -87,15 +87,17 @@ class Opinion:
                 opinions.append(opinion)
         return opinions
 
+
     @staticmethod
-    def get_five(page=1, per_page=5):
-        opinions = []
+    def get_paginated_comments(page, per_page):
+        offset = (page - 1) * per_page
+        comments = []
+        
         with mydb.cursor(dictionary=True) as cursor:
-            # Calcular el offset
-            offset = (page - 1) * per_page
-            # Consulta SQL con LIMIT y OFFSET para la paginación
-            sql = "SELECT * FROM vista_opiniones ORDER BY fecha DESC LIMIT %s OFFSET %s"
-            cursor.execute(sql, (per_page, offset))
+            cursor.execute("SELECT COUNT(*) FROM vista_opiniones")
+            total = cursor.fetchone()['COUNT(*)']
+            
+            cursor.execute("SELECT * FROM vista_opiniones ORDER BY `id de opinion` DESC LIMIT %s OFFSET %s", (per_page, offset))
             result = cursor.fetchall()
             
             for row in result:
@@ -107,8 +109,9 @@ class Opinion:
                     comment_opinion=row["comentario"],
                     date_opinion=row["fecha"]
                 )
-                opinions.append(opinion)
-        return opinions
+                comments.append(opinion)
+        
+        return comments, total
 
     
 class Product:

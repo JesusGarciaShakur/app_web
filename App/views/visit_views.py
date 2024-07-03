@@ -1,3 +1,4 @@
+from flask import make_response
 import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -29,7 +30,10 @@ def product():
     form = OpinionForm()
     products = Product.get_all()
     form.id_product.choices = [(product.id_product, product.product_name) for product in products]
-    opinions = Opinion.get_all()
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    opinions, total_opinions = Opinion.get_paginated_comments(page, per_page)
     
     if 'user' in session:
         user = session['user']
@@ -53,6 +57,9 @@ def product():
             return redirect(url_for('visit.product'))
         else:
             flash('Error al registrar la calificación. Por favor, revisa los datos ingresados.', 'error')
+    
+    # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
+        return render_template('pages/product.html', form=form, opinions=opinions, products=products, total_opinions=total_opinions, page=page, per_page=per_page)
     
     # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
     return render_template('pages/product.html', form=form, opinions=opinions, products=products)
@@ -248,25 +255,24 @@ def delete_profile(id_user):
     user.delete()
     return redirect(url_for('visit.index'))
 
-
 @visit_views.route('/get_comments')
 def get_comments():
     page = request.args.get('page', 1, type=int)
     per_page = 5
-    offset = (page - 1) * per_page
+    
+    comments, total = Opinion.get_paginated_comments(page, per_page)
+    
+    comments_dict = [{
+        'id_opinion': comment.id_opinion,
+        'username_opinion': comment.username_opinion,
+        'id_product': comment.id_product,
+        'rating_product': comment.rating_product,
+        'comment_opinion': comment.comment_opinion,
+        'date_opinion': comment.date_opinion
+    } for comment in comments]
 
-    with mydb.cursor(dictionary=True) as cursor:
-        cursor.execute("SELECT COUNT(*) FROM vista_opiniones")
-        total = cursor.fetchone()['COUNT(*)']
-        
-        cursor.execute("SELECT * FROM vista_opiniones ORDER BY `id de opinion` DESC LIMIT %s OFFSET %s", (per_page, offset))
-        result = cursor.fetchall()
-    
-    comments = [dict(id_opinion=row["id de opinion"],
-                    username_opinion=row["nombre de usuario"],
-                    id_product=row["nombre del producto"],  # Ensure this matches exactly with your column name
-                    rating_product=row["calificacion"],
-                    comment_opinion=row["comentario"],
-                    date_opinion=row["fecha"]) for row in result]
-    
-    return jsonify({'comments': comments, 'total': total, 'page': page, 'per_page': per_page})
+    response = make_response(jsonify({'comments': comments_dict, 'total': total, 'page': page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response

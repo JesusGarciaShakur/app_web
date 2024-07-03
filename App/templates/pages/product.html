@@ -218,6 +218,7 @@
             url: "{{ url_for('visit.get_comments') }}",
             type: 'GET',
             data: { page: page },
+            cache: false, // Ensure that the request is not cached
             success: function (response) {
                 $('#comments-container').empty();
                 if (response.comments.length > 0) {
@@ -268,7 +269,6 @@
 
     fetchComments(currentPage);
 });
-
 </script>
 
 {% endblock %}
