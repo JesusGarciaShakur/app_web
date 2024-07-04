@@ -8,16 +8,49 @@ from models.sales import Sale
 from forms.user_forms import RegisterForm, UpdateUserForm
 from forms.products_forms import RegisterProduct, UpdateProduct
 from utils.file_handler import save_image
+from flask import request
+from flask import make_response
+from flask import jsonify
 
 admin_views = Blueprint('admin', __name__)
 
 @admin_views.route('/admin/users')
 def admin_users():
     if session.get('user') and session.get('user')['type'] == 1:
-        users = User.get_all()
-        return render_template('admin/users_admin.html', users=users)
+        page = request.args.get('page', 1, type=int)
+        per_page = 1
+        users, total = User.get_paginated_users(page, per_page)
+        total_pages = (total + per_page - 1) // per_page
+        
+        return render_template('admin/users_admin.html', users=users, page=page, total_pages=total_pages)
     else:
         abort(403)
+
+@admin_views.route('/get_users')
+def get_users():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    users, total = User.get_paginated_users(page, per_page)
+
+    users_dict = [
+        {
+            'id_user': user.id_user,
+            'id_type': user.id_type,
+            'user_username': user.user_username,
+            'user_name': user.user_name,
+            'user_lastname': user.user_lastname,
+            'user_email': user.user_email,
+            'user_direction': user.user_direction,
+            'user_phoneNumber': user.user_phoneNumber
+        }
+        for user in users
+    ]
+
+    response = make_response(jsonify({'users':users_dict, 'total': total, 'page': page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @admin_views.route('/admin/sales')
 def admin_sales():

@@ -107,6 +107,31 @@ class User:
         return users
 
     @staticmethod
+    def get_paginated_users(page, per_page):
+        offset = (page - 1) * per_page
+        users = []
+        
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT COUNT(*) FROM vista_usuarios")
+            total = cursor.fetchone()['COUNT(*)']
+            
+            cursor.execute("SELECT * FROM vista_usuarios ORDER BY `id de usuario` DESC LIMIT %s OFFSET %s", (per_page, offset))
+            result = cursor.fetchall()
+            for row in result:
+                user = User(
+                    id_user=row["id de usuario"],
+                    id_type=row["tipo de usuario"],
+                    user_username=row["nombre de usuario"],
+                    user_name=row["nombre"],
+                    user_lastname=row["apellido"],
+                    user_email=row["correo electronico"],
+                    user_direction=row["direccion"],
+                    user_phoneNumber=row["numero de telefono"]
+                )
+                users.append(user)
+        return users, total
+
+    @staticmethod
     def check_username(user_username):
         with mydb.cursor(dictionary=True) as cursor:
             sql = "SELECT id_user FROM users WHERE user_username = %s"
