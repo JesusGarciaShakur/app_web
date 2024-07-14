@@ -1,3 +1,15 @@
+p {
+    text-align: justify;
+    font-family: "Rubik", sans-serif;
+}
+
+p.pregunta {
+    text-align: center;
+}
+
+p.perfil{
+    text-align: left;
+}
 
 #back-to-top {
     position: fixed;

@@ -128,7 +128,7 @@
             <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y
                 háznosla saber</p>
             {% else %}
-            <p>Tienes alguna otra pregunta, háznosla saber</p>
+            <p class="pregunta">Tienes alguna otra pregunta, háznosla saber</p>
             <div>
                 <form method="post" action="{{ url_for('visit.contact') }}" enctype="multipart/form-data" class="mt-3"
                     style="max-width: 800px; margin: auto;">
