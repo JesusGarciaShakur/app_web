@@ -6,7 +6,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <br>
@@ -112,7 +111,7 @@
       <div class="d-flex justify-content-center">
         <a class="btn btn-primary" href="{{ url_for('visit.product_list') }}">
           Ver Lista de Productos
-        </a>        
+        </a>
       </div>
       {% endif %}
       <hr style="border-top: 1px solid #000; opacity: 0.2;">
@@ -125,150 +124,124 @@
   <h2 class="text-center mb-4">Opiniones</h2>
   {% if 'user' in session %}
   <div class="d-flex justify-content-center">
-      <a class="download1" href="#" data-toggle="modal" data-target="#commentModal">Deja tu opinion sobre nuestro producto</a>
+    <a class="download1" href="#" data-toggle="modal" data-target="#commentModal">Deja tu opinion sobre nuestro
+      producto</a>
   </div>
   <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="commentModalLabel">Deja tu Opinión</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commentModalLabel">Deja tu Opinión</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{{ url_for('visit.product') }}" enctype="multipart/form-data" class="mt-3"
+            style="max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            {{ form.csrf_token }}
+            <div class="form-group">
+              <div class="form-row align-items-center">
+                <div class="col-md-8">
+                  <div class="form-group mb-0">
+                    {{ form.id_product.label }}
+                    <select class="form-control custom-select" name="{{ form.id_product.name }}">
+                      <option value="">Selecciona tu producto a calificar...</option>
+                      {% for id_product, product_name in form.id_product.choices %}
+                      <option value="{{ id_product }}">{{ product_name }}</option>
+                      {% endfor %}
+                    </select>
+                    {% if form.id_product.errors %}
+                    {% for error in form.id_product.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group mb-0">
+                    <label class="form-label mb-0 mr-2">Calificación:</label>
+                    <div id="rating-stars" class="d-flex align-items-center">
+                      {% for i in range(1, 6) %}
+                      <i class="fa fa-star" data-value="{{ i }}"></i>
+                      {% endfor %}
+                    </div>
+                    <input type="hidden" name="rating_product" id="rating_product"
+                      value="{{ form.rating_product.data }}">
+                  </div>
+                </div>
               </div>
-              <div class="modal-body">
-                  <form method="post" action="{{ url_for('visit.product') }}" enctype="multipart/form-data" class="mt-3"
-                      style="max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-                      {{ form.csrf_token }}
-                      <div class="form-group">
-                          <div class="form-row align-items-center">
-                              <div class="col-md-8">
-                                  <div class="form-group mb-0">
-                                      {{ form.id_product.label }}
-                                      <select class="form-control custom-select" name="{{ form.id_product.name }}">
-                                          <option value="">Selecciona tu producto a calificar...</option>
-                                          {% for id_product, product_name in form.id_product.choices %}
-                                          <option value="{{ id_product }}">{{ product_name }}</option>
-                                          {% endfor %}
-                                      </select>
-                                      {% if form.id_product.errors %}
-                                      {% for error in form.id_product.errors %}
-                                      <div class="text-danger">{{ error }}</div>
-                                      <p>{{ error }}</p>
-                                      {% endfor %}
-                                      {% endif %}
-                                  </div>
-                              </div>
-                              <div class="col-md-4">
-                                  <div class="form-group mb-0">
-                                      <label class="form-label mb-0 mr-2">Calificación:</label>
-                                      <div id="rating-stars" class="d-flex align-items-center">
-                                          {% for i in range(1, 6) %}
-                                          <i class="fa fa-star" data-value="{{ i }}"></i>
-                                          {% endfor %}
-                                      </div>
-                                      <input type="hidden" name="rating_product" id="rating_product" value="{{ form.rating_product.data }}">
-                                  </div>
-                              </div>
-                          </div>
 
-                          <label for="comment_opinion">Opina sobre nuestro producto:</label>
-                          {{ form.comment_opinion(class="form-control", required="required", placeholder="Ingrese su pregunta o comentario") }}
-                          {% if form.comment_opinion.errors %}
-                          {% for error in form.comment_opinion.errors %}
-                          <div class="text-danger">{{ error }}</div>
-                          {% endfor %}
-                          {% endif %}
-                      </div>
-                      <div class="form-group text-center">
-                          {{ form.submit(class="btn btn-primary") }}
-                      </div>
-                  </form>
-              </div>
-          </div>
+              <label for="comment_opinion">Opina sobre nuestro producto:</label>
+              {{ form.comment_opinion(class="form-control", required="required", placeholder="Ingrese su opinion") }}
+              {% if form.comment_opinion.errors %}
+              {% for error in form.comment_opinion.errors %}
+              <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+              {% endif %}
+            </div>
+            <div class="form-group text-center">
+              {{ form.submit(class="btn btn-primary") }}
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
   </div>
   {% else %}
   <p class="text-center">Para opinar sobre nuestro producto, <a href="{{ url_for('home.signin') }}">inicia sesión</a> o
-      <a href="{{ url_for('home.logout') }}">regístrate</a>.
+    <a href="{{ url_for('home.logout') }}">regístrate</a>.
   </p>
   {% endif %}
-  
   <h3 class="text-center mt-5">Opiniones de otros usuarios</h3>
-  <div class="list-group" id="comments-container">
-      <!-- Comentarios se insertarán aquí -->
-  </div>
-  <div class="d-flex justify-content-center mt-4">
-      <nav>
-          <ul class="pagination" id="pagination">
-              <!-- Botones de paginación se insertarán aquí -->
-          </ul>
-      </nav>
+  <div class="list-group">
+    {% if opinions %}
+    {% for opinion in opinions | sort(attribute='id_opinion', reverse=true) %}
+    <div class="list-group-item">
+      <small>
+        Calificación:
+        <span class="stars">
+          {% set rating = opinion.rating_product | int %}
+          {% for i in range(1, 6) %}
+          {% if i <= rating %} <i class="fa fa-star checked"></i>
+            {% else %}
+            <i class="fa fa-star"></i>
+            {% endif %}
+            {% endfor %}
+        </span>
+        | Fecha: {{ opinion.date_opinion.strftime('%d/%m/%Y') }}
+      </small>
+      <h5 class="mb-1">{{ opinion.username_opinion }}</h5>
+      <p class="mb-1">{{ opinion.id_product }}</p>
+      <p class="mb-1">{{ opinion.comment_opinion }}</p>
+    </div>
+    {% endfor %}
+    <br>
+    <!-- Pagination controls -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item {% if page == 1 %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('visit.product', page=page-1) }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link"
+            href="{{ url_for('visit.product', page=p) }}">{{ p }}</a></li>
+        {% endfor %}
+        <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('visit.product', page=page+1) }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    {% else %}
+    <p class="text-center">No hay comentarios todavía.</p>
+    {% endif %}
   </div>
 </div>
-
-
-<script>
-  $(document).ready(function () {
-    let currentPage = 1;
-
-    function fetchComments(page) {
-        $.ajax({
-            url: "{{ url_for('visit.get_comments') }}",
-            type: 'GET',
-            data: { page: page },
-            cache: false, // Ensure that the request is not cached
-            success: function (response) {
-                $('#comments-container').empty();
-                if (response.comments.length > 0) {
-                    response.comments.forEach(comment => {
-                        $('#comments-container').append(`
-                            <div class="list-group-item">
-                                <small>
-                                    Calificación:
-                                    <span class="stars">
-                                        ${[...Array(5).keys()].map(i => i < comment.rating_product ? '<i class="fa fa-star checked"></i>' : '<i class="fa fa-star"></i>').join('')}
-                                    </span>
-                                    | Fecha: ${new Date(comment.date_opinion).toLocaleDateString('es-ES')}
-                                </small>
-                                <h5 class="mb-1">${comment.username_opinion}</h5>
-                                <p class="mb-1">${comment.id_product}</p>
-                                <p class="mb-1">${comment.comment_opinion}</p>
-                            </div>
-                        `);
-                    });
-                } else {
-                    $('#comments-container').append('<p class="text-center">No hay comentarios todavía.</p>');
-                }
-                updatePagination(response.page, response.total, response.per_page);
-            }
-        });
-    }
-
-    function updatePagination(page, total, perPage) {
-        $('#pagination').empty();
-        const totalPages = Math.ceil(total / perPage);
-        for (let i = 1; i <= totalPages; i++) {
-            $('#pagination').append(`
-                <li class="page-item ${i === page ? 'active' : ''}">
-                    <a class="page-link" href="#" data-page="${i}">${i}</a>
-                </li>
-            `);
-        }
-    }
-
-    $(document).on('click', '.page-link', function (e) {
-        e.preventDefault();
-        const page = $(this).data('page');
-        if (page !== currentPage) {
-            currentPage = page;
-            fetchComments(page);
-        }
-    });
-
-    fetchComments(currentPage);
-});
-</script>
 
 {% endblock %}

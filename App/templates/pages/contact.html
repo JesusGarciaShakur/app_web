@@ -134,7 +134,6 @@
                     style="max-width: 800px; margin: auto;">
                     {{ form.hidden_tag() }}
                     <div class="form-group">
-                        <label for="content_comment">Pregunta o comentario:</label>
                         {{ form.content_comment(class="form-control", required="required", placeholder="Ingrese su pregunta o comentario") }}
                         {% if form.content_comment.errors %}
                         {% for error in form.content_comment.errors %}

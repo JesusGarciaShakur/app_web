@@ -30,10 +30,10 @@ def product():
     form = OpinionForm()
     products = Product.get_all()
     form.id_product.choices = [(product.id_product, product.product_name) for product in products]
-    
     page = request.args.get('page', 1, type=int)
     per_page = 5
-    opinions, total_opinions = Opinion.get_paginated_comments(page, per_page)
+    opinions, total = Opinion.get_paginated_opinions(page=page, per_page=per_page)
+    total_pages = (total + per_page -1) // per_page
     
     if 'user' in session:
         user = session['user']
@@ -59,11 +59,31 @@ def product():
             flash('Error al registrar la calificación. Por favor, revisa los datos ingresados.', 'error')
     
     # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
-        return render_template('pages/product.html', form=form, opinions=opinions, products=products, total_opinions=total_opinions, page=page, per_page=per_page)
-    
-    # En el caso de GET o si hay errores en el formulario, renderiza la plantilla con los datos necesarios.
-    return render_template('pages/product.html', form=form, opinions=opinions, products=products)
+    return render_template('pages/product.html', form=form, opinions=opinions, products=products, page=page, total_pages=total_pages)
 
+@visit_views.route('/get_opinions')
+def get_opinions():
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    opinions, total = Opinion.get_paginated_opinions(page=page, per_page=per_page)
+
+    opinions_dict = [
+        {
+            'id_opinion': opinion.id_opinion,
+            'username_opinion': opinion.username_opinion,
+            'id_product': opinion.id_product,
+            'rating_product': opinion.rating_product,
+            'comment_opinion': opinion.comment_opinion,
+            'date_opinion': opinion.date_opinion
+        }
+        for opinion in opinions
+    ]
+
+    response = make_response(jsonify({'opinions':opinions_dict, 'total':total, 'page':page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @visit_views.route('/product_list', methods=['GET', 'POST'])
 def product_list():
@@ -258,7 +278,7 @@ def delete_profile(id_user):
 @visit_views.route('/get_comments')
 def get_comments():
     page = request.args.get('page', 1, type=int)
-    per_page = 5
+    per_page = 10
     
     comments, total = Opinion.get_paginated_comments(page, per_page)
     

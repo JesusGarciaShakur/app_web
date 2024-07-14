@@ -89,9 +89,9 @@ class Opinion:
 
 
     @staticmethod
-    def get_paginated_comments(page, per_page):
+    def get_paginated_opinions(page, per_page):
         offset = (page - 1) * per_page
-        comments = []
+        opinions = []
         
         with mydb.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT COUNT(*) FROM vista_opiniones")
@@ -109,9 +109,9 @@ class Opinion:
                     comment_opinion=row["comentario"],
                     date_opinion=row["fecha"]
                 )
-                comments.append(opinion)
+                opinions.append(opinion)
         
-        return comments, total
+        return opinions, total
 
     
 class Product:
