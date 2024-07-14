@@ -90,6 +90,28 @@ class Sale:
                 sales.append(sale)
         return sales
     
+    @staticmethod
+    def get_paginated_sales(page, per_page):
+        offset = (page - 1) * per_page
+        sales = []
+        
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT COUNT(*) FROM sales")
+            total = cursor.fetchone()['COUNT(*)']
+            
+            cursor.execute("SELECT * FROM sales ORDER BY `id_sale` DESC LIMIT %s OFFSET %s", (per_page, offset))
+            result = cursor.fetchall()
+            for row in result:
+                sale= Sale(id_sale=row["id_sale"],
+                                userName_sale=row["userName_sale"],
+                                product_name=row["product_name"],
+                                sale_date=row["sale_date"],
+                                total_sale=row["total_sale"],
+                                direction=row["direction"],
+                                pieces=row["pieces"])
+                sales.append(sale)
+        return sales, total
+    
 class Product:
     def __init__(self, id_product='', product_name='', product_price='', product_description='',product_image = ''):
         self.id_product = product_name

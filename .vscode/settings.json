@@ -15,5 +15,25 @@
     "ultrasónicas",
     "ultrasónico",
     "wtforms"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#35435f",
+    "activityBar.background": "#35435f",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#a45b73",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#35435f",
+    "statusBar.background": "#232c3e",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#35435f",
+    "statusBarItem.remoteBackground": "#232c3e",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#232c3e",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#232c3e99",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#232C3E"
 }

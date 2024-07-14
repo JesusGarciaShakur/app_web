@@ -66,3 +66,23 @@ class Product:
                                 product_image=row["product_image"])
                 products.append(product)
         return products 
+    
+    @staticmethod
+    def get_paginated_products(page, per_page):
+        offset = (page - 1) * per_page
+        products = []
+
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT COUNT(*) FROM products")
+            total = cursor.fetchone()["COUNT(*)"]
+
+            cursor.execute("SELECT * FROM products ORDER BY `id_product` DESC LIMIT %s OFFSET %s", (per_page, offset))
+            result = cursor.fetchall()
+            for row in result:
+                product = Product(id_product=row["id_product"],
+                                product_name=row["product_name"],
+                                product_price=row["product_price"],
+                                product_description=row["product_description"],
+                                product_image=row["product_image"])
+                products.append(product)
+            return products, total

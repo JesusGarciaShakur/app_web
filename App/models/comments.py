@@ -79,3 +79,24 @@ class Comment:
                                 nameUser_comment=comment["nameUser_comment"]) for comment in comments]
                 return comments
         return None
+
+
+    @staticmethod
+    def get_paginated_comments(page, per_page):
+        offset = (page - 1) * per_page
+        comments = []
+
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT COUNT(*) FROM comments")
+            total = cursor.fetchone()["COUNT(*)"]
+
+            cursor.execute("SELECT * FROM comments ORDER BY `id_comment` DESC LIMIT %s OFFSET %s", (per_page, offset))
+            result = cursor.fetchall()
+            for row in result:
+                comment = Comment(id_comment=row["id_comment"],
+                                content_comment=row["content_comment"],
+                                email_comment=row["email_comment"],
+                                date_comment=row["date_comment"],
+                                nameUser_comment=row["nameUser_comment"])
+                comments.append(comment)
+            return comments, total

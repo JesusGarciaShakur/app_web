@@ -18,7 +18,7 @@ admin_views = Blueprint('admin', __name__)
 def admin_users():
     if session.get('user') and session.get('user')['type'] == 1:
         page = request.args.get('page', 1, type=int)
-        per_page = 1
+        per_page = 10
         users, total = User.get_paginated_users(page, per_page)
         total_pages = (total + per_page - 1) // per_page
         
@@ -55,26 +55,108 @@ def get_users():
 @admin_views.route('/admin/sales')
 def admin_sales():
     if session.get('user') and session.get('user')['type'] == 1:
-        sales = Sale.get_all()
-        return render_template('admin/sales_admin.html', sales=sales)
+        page = request.args.get('page', 1, type=int)
+        per_page = 10
+        sales, total = Sale.get_paginated_sales(page, per_page)
+        total_pages = (total + per_page - 1) // per_page
+
+        return render_template('admin/sales_admin.html', sales=sales, page=page, total_pages=total_pages)
     else:
         abort(403)
+
+@admin_views.route('/get_sales')
+def get_sales():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    sales, total = Sale.get_paginated_sales(page, per_page)
+
+    sales_dict = [
+        {
+            'id_sale': sale.id_sale,
+            'userName_sale': sale.userName_sale,
+            'product_name': sale.product_name,
+            'sale_date': sale.sale_date,
+            'total_sale': sale.total_sale,
+            'direction': sale.direction,
+            'pieces': sale.pieces
+        }
+        for sale in sales
+    ]
+
+    response = make_response(jsonify({'sales':sales_dict, 'total': total, 'page': page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @admin_views.route('/admin/comments')
 def admin_comments():
     if session.get('user') and session.get('user')['type'] == 1:
-        comments = Comment.get_all()
-        return render_template('admin/comments_admin.html', comments=comments)
+        page = request.args.get('page', 1, type=int)
+        per_page = 10
+        comments, total = Comment.get_paginated_comments(page, per_page)
+        total_pages = (total + per_page - 1) // per_page
+
+        return render_template('admin/comments_admin.html', comments=comments, page=page, total_pages=total_pages)
     else:
         abort(403)
+
+@admin_views.route('/get_comments')
+def get_comments():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    comments, total = Comment.get_paginated_comments(page, per_page)
+
+    comments_dict = [
+        {
+            'id_comment': comment.id_comment,
+            'content_comment': comment.content_comment,
+            'email_comment': comment.email_comment,
+            'date_comment': comment.date_comment,
+            'nameUser_comment': comment.nameUser_comment
+        }
+        for comment in comments
+    ]
+
+    response = make_response(jsonify({'comments':comments_dict, 'total': total, 'page': page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @admin_views.route('/admin/products')
 def admin_products():
     if session.get('user') and session.get('user')['type'] == 1:
-        products = Product.get_all()
-        return render_template('admin/products_admin.html', products=products)
+        page = request.args.get('page', 1, type=int)
+        per_page = 10
+        products, total = Product.get_paginated_products(page, per_page)
+        total_pages = (total + per_page - 1) // per_page
+        return render_template('admin/products_admin.html', products=products, page=page, total_pages=total_pages)
     else:
         abort(403)
+
+@admin_views.route('/get_products')
+def get_products():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    products, total = Product.get_paginated_products(page, per_page)
+
+    products_dict = [
+        {
+            'id_product': product.id_product,
+            'product_name': product.product_name,
+            'product_price': product.product_price,
+            'product_description': product.product_description,
+            'product_image': product.product_image
+        }
+        for product in products
+    ]
+
+    response = make_response(jsonify({'products':products_dict, 'total': total, 'page': page, 'per_page': per_page}))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @admin_views.route('/admin/register/products', methods=('GET', 'POST'))
 def admin_register_products():
