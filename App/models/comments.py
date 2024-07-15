@@ -99,4 +99,35 @@ class Comment:
                                 date_comment=row["date_comment"],
                                 nameUser_comment=row["nameUser_comment"])
                 comments.append(comment)
-            return comments, total
+        return comments, total
+        
+    @staticmethod
+    def search(query, page, per_page):
+        offset = (page - 1) * per_page
+        comments = []
+        search_query = f"%{query}%"
+
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("""
+                SELECT COUNT(*) FROM comments 
+                WHERE content_comment LIKE %s OR email_comment LIKE %s 
+                OR date_comment LIKE %s OR nameUser_comment LIKE %s
+            """, (search_query, search_query, search_query, search_query))
+            total = cursor.fetchone()["COUNT(*)"]
+
+            cursor.execute("""
+                SELECT * FROM comments 
+                WHERE content_comment LIKE %s OR email_comment LIKE %s 
+                OR date_comment LIKE %s OR nameUser_comment LIKE %s
+                ORDER BY id_comment DESC LIMIT %s OFFSET %s
+            """, (search_query, search_query, search_query, search_query, per_page, offset))
+            result = cursor.fetchall()
+
+            for row in result:
+                comment = Comment(id_comment=row["id_comment"],
+                                content_comment=row["content_comment"],
+                                email_comment=row["email_comment"],
+                                date_comment=row["date_comment"],
+                                nameUser_comment=row["nameUser_comment"])
+                comments.append(comment)
+        return comments, total

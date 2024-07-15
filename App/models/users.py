@@ -130,6 +130,45 @@ class User:
                 )
                 users.append(user)
         return users, total
+    
+    @staticmethod
+    def search(query, page, per_page):
+        offset = (page - 1) * per_page
+        users = []
+        search_query = f"%{query}%"
+
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("""
+                SELECT COUNT(*) FROM vista_usuarios
+                WHERE `id de usuario` LIKE %s OR `tipo de usuario` LIKE %s OR `nombre de usuario` LIKE %s
+                OR `nombre` LIKE %s OR `apellido` LIKE %s OR `correo electronico` LIKE %s
+                OR `direccion` LIKE %s OR `numero de telefono` LIKE %s
+            """, (search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query))
+            total = cursor.fetchone()['COUNT(*)']
+
+            cursor.execute("""
+                SELECT * FROM vista_usuarios
+                WHERE `id de usuario` LIKE %s OR `tipo de usuario` LIKE %s OR `nombre de usuario` LIKE %s
+                OR `nombre` LIKE %s OR `apellido` LIKE %s OR `correo electronico` LIKE %s
+                OR `direccion` LIKE %s OR `numero de telefono` LIKE %s
+                ORDER BY `id de usuario` DESC LIMIT %s OFFSET %s
+            """, (search_query, search_query, search_query, search_query, search_query, search_query, search_query, search_query, per_page, offset))
+            result = cursor.fetchall()
+
+            for row in result:
+                user = User(
+                    id_user=row["id de usuario"],
+                    id_type=row["tipo de usuario"],
+                    user_username=row["nombre de usuario"],
+                    user_name=row["nombre"],
+                    user_lastname=row["apellido"],
+                    user_email=row["correo electronico"],
+                    user_direction=row["direccion"],
+                    user_phoneNumber=row["numero de telefono"]
+                )
+                users.append(user)
+        return users, total
+
 
     @staticmethod
     def check_username(user_username):

@@ -86,3 +86,32 @@ class Product:
                                 product_image=row["product_image"])
                 products.append(product)
             return products, total
+        
+    
+    @staticmethod
+    def search(query, page, per_page):
+        offset = (page -1) * per_page
+        sales = []
+        search_query = f"%{query}%"
+
+        with mydb.cursor(dictionary=True) as cursor:
+            cursor.execute("""
+                SELECT COUNT(*) FROM products 
+                WHERE product_name LIKE %s OR product_price LIKE %s OR product_description LIKE %s
+            """, (search_query, search_query, search_query))
+            total = cursor.fetchone()['COUNT(*)']
+
+            cursor.execute("""
+                SELECT * FROM products 
+                WHERE product_name LIKE %s OR product_price LIKE %s OR product_description LIKE %s
+                ORDER BY `id_product` DESC LIMIT %s OFFSET %s
+            """, (search_query, search_query, search_query, per_page, offset))
+            result = cursor.fetchall()
+            for row in result:
+                product = Product(id_product=row["id_product"],
+                                product_name=row["product_name"],
+                                product_price=row["product_price"],
+                                product_description=row["product_description"],
+                                product_image=row["product_image"])
+                sales.append(product)
+            return sales, total

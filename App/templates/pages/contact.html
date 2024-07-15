@@ -125,7 +125,7 @@
     <div class="row justify-content-center">
         <div class="ask-question text-center">
             {% if 'user' not in session %}
-            <p>Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y
+            <p class="pregunta">Tienes alguna otra pregunta, <a class="download1" href="{{ url_for('home.signin') }}">inicia sesión</a> y
                 háznosla saber</p>
             {% else %}
             <p class="pregunta">Tienes alguna otra pregunta, háznosla saber</p>

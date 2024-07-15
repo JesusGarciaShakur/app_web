@@ -10,6 +10,9 @@ p.pregunta {
 p.perfil{
     text-align: left;
 }
+h1.politicas{
+    text-align: center;
+}
 
 #back-to-top {
     position: fixed;

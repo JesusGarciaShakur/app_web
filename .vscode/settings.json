@@ -35,5 +35,7 @@
     "titleBar.inactiveBackground": "#232c3e99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#232C3E"
+  "peacock.color": "#232C3E",
+  "spellright.language": ["en", "es"],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext"]
 }

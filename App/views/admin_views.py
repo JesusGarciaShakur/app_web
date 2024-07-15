@@ -17,9 +17,15 @@ admin_views = Blueprint('admin', __name__)
 @admin_views.route('/admin/users')
 def admin_users():
     if session.get('user') and session.get('user')['type'] == 1:
-        page = request.args.get('page', 1, type=int)
+        page = int(request.args.get('page', 1))
         per_page = 10
-        users, total = User.get_paginated_users(page, per_page)
+        search_query = request.args.get('search', '')
+
+        if search_query:
+            users, total = User.search(search_query, page, per_page)
+        else:
+            users, total = User.get_paginated_users(page, per_page)
+
         total_pages = (total + per_page - 1) // per_page
         
         return render_template('admin/users_admin.html', users=users, page=page, total_pages=total_pages)
@@ -55,9 +61,15 @@ def get_users():
 @admin_views.route('/admin/sales')
 def admin_sales():
     if session.get('user') and session.get('user')['type'] == 1:
-        page = request.args.get('page', 1, type=int)
+        page = int(request.args.get('page', 1))
         per_page = 10
-        sales, total = Sale.get_paginated_sales(page, per_page)
+        search_query = request.args.get('search', '')
+
+        if search_query:
+            sales, total = Sale.search(search_query, page, per_page)
+        else:
+            sales, total = Sale.get_paginated_sales(page, per_page)
+
         total_pages = (total + per_page - 1) // per_page
 
         return render_template('admin/sales_admin.html', sales=sales, page=page, total_pages=total_pages)
@@ -92,9 +104,15 @@ def get_sales():
 @admin_views.route('/admin/comments')
 def admin_comments():
     if session.get('user') and session.get('user')['type'] == 1:
-        page = request.args.get('page', 1, type=int)
+        page = int(request.args.get('page', 1))
         per_page = 10
-        comments, total = Comment.get_paginated_comments(page, per_page)
+        search_query = request.args.get('search', '')
+
+        if search_query:
+            comments, total = Comment.search(search_query, page, per_page)
+        else:
+            comments, total = Comment.get_paginated_comments(page, per_page)
+            
         total_pages = (total + per_page - 1) // per_page
 
         return render_template('admin/comments_admin.html', comments=comments, page=page, total_pages=total_pages)
@@ -127,9 +145,15 @@ def get_comments():
 @admin_views.route('/admin/products')
 def admin_products():
     if session.get('user') and session.get('user')['type'] == 1:
-        page = request.args.get('page', 1, type=int)
+        page = int(request.args.get('page', 1))
         per_page = 10
-        products, total = Product.get_paginated_products(page, per_page)
+        search_query = request.args.get('search', '')
+
+        if search_query:
+            products, total = Product.search(search_query, page, per_page)
+        else:
+            products, total = Product.get_paginated_products(page, per_page)
+            
         total_pages = (total + per_page - 1) // per_page
         return render_template('admin/products_admin.html', products=products, page=page, total_pages=total_pages)
     else:
